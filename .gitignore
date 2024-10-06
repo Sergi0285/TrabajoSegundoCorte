@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+recursos/miniaturas/*
+!recursos/miniaturas/
+recursos/videos/*
+!recursos/videos/

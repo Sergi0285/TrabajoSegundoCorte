@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Video</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../Css/cargarCss.css">
+</head>
+<body>
+    <h1>Upload Video</h1>
+
+    <label for="title">Title:</label>
+    <input type="text" id="title" placeholder="Video Title"><br><br>
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" placeholder="Video Description"><br><br>
+
+    <label for="file">Video File:</label>
+    <input type="file" id="file"><br><br>
+
+    <button id="uploadButton" onclick="subirVideo()">Upload Video</button>
+
+    <h2>Video List</h2>
+    <ul id="videoList"></ul>
+
+    <script src="../JS/cargarJS.js"></script>
+</body>
+</html>
