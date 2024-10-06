@@ -33,6 +33,6 @@ build/
 .vscode/
 
 recursos/miniaturas/*
-!recursos/miniaturas/
 recursos/videos/*
+!recursos/miniaturas/
 !recursos/videos/
