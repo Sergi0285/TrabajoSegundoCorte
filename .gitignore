@@ -32,7 +32,11 @@ build/
 ### VS Code ###
 .vscode/
 
+# Ignorar todo el contenido dentro de las carpetas miniaturas y videos
 recursos/miniaturas/*
 recursos/videos/*
+
+# Permitir que las carpetas de recursos, miniaturas y videos se mantengan
+!recursos/
 !recursos/miniaturas/
 !recursos/videos/
