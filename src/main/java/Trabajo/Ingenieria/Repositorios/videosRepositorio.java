@@ -12,14 +12,14 @@ import Trabajo.Ingenieria.Entidades.videos;
 public class videosRepositorio {
 
     @Autowired
-    private videosCRUDrepositorio video;
+    private videosCRUDRepositorio video;
 
     public videos save(videos v){
         return video.save(v);
     }
 
-    public Optional<videos> findById(Long id){
-        return video.findById(id);
+    public videos findById(Long id){
+        return video.findById(id).orElse(null);
     }
 
     public List<videos> findAll(){
