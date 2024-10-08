@@ -41,13 +41,10 @@ function generatePassword() {
 
     document.getElementById("usuariocontrasena").value = password;
 }
-
-// Asigna los eventos cuando el DOM esté listo
 $(document).ready(function() {
     $('#togglePassword').click(togglePasswordVisibility);
     $('#generatePasswordBtn').click(generatePassword);
 });
-
 // Función para guardar el usuario
 function saveUsuario() {
     let name = $("#usuarioname").val();
@@ -60,16 +57,30 @@ function saveUsuario() {
         alert('Por favor, complete todos los campos.');
         return; // Detener la ejecución si algún campo está vacío
     }
+    // Obtener la imagen de perfil seleccionada
+    const selectedImage = document.querySelector('input[name="profilePicture"]:checked');
+    let profileImage = "";
+    if (selectedImage) {
+        profileImage = selectedImage.value;
+    }
 
+    // Verificar que se haya seleccionado una imagen
+    if (profileImage === "") {
+        alert("Por favor selecciona una imagen de perfil.");
+        return;
+    }
+
+    // Crear un objeto de usuario para enviar al servidor
     let data = {
         nombre: name,
         username: alias,
         correo: mail,
         celular: cel,
         password: contrasena,
+        perfil: profileImage
     };
 
-    localStorage.clear();
+    // Enviar los datos al servidor usando fetch o AJAX
     $.ajax({
         url: '/auth/register',
         type: 'POST',

@@ -38,6 +38,7 @@ public class usuario implements UserDetails{
     String username;
     String correo;
     String celular;
+    String perfil;
     String password;
     @Enumerated(EnumType.STRING) 
     role rol;

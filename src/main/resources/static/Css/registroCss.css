@@ -1,0 +1,120 @@
+.input-container {
+    position: relative;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.input-container input {
+    width: 100%;
+    padding-left: 40px; /* Espacio para el icono a la izquierda */
+    height: 40px; /* Establece una altura uniforme para todos los campos */
+    border: 1px solid #ccc; /* Borde para todos los inputs */
+    border-radius: 5px; /* Bordes redondeados */
+    box-sizing: border-box; /* Asegura que el padding no afecte al ancho total */
+}
+
+/* Estilo para el icono del candado */
+.input-icon {
+    position: absolute;
+    left: 10px; /* Alinea el icono a la izquierda */
+    top: 50%;
+    transform: translateY(-50%); /* Centra verticalmente el icono */
+    color: #999; /* Color del icono */
+    font-size: 18px; /* Ajuste del tamaño del icono */
+}
+
+/* Estilo para el contenedor de contraseña */
+.password-container {
+    position: relative;
+    margin-bottom: 20px;
+    width: 100%; /* Asegura que el contenedor de la contraseña ocupe el 100% */
+    display: flex; /* Usa flexbox para centrar los elementos */
+    align-items: center; /* Alinea verticalmente los elementos */
+}
+
+.password-container input {
+    width: 100%;
+    padding: 0 60px 0 40px; /* Espacio para el icono y botones */
+    height: 40px; /* Asegura la misma altura que otros inputs */
+    border: 1px solid #ccc; /* Borde para el campo de contraseña */
+    border-radius: 5px; /* Bordes redondeados */
+    box-sizing: border-box; /* Asegura que el padding no afecte al ancho total */
+}
+
+/* Estilos para los botones dentro del campo de contraseña */
+.password-container .eye-icon,
+.password-container .key-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); /* Centra verticalmente los botones */
+    background: none;
+    border: none; /* Elimina el borde del botón */
+    cursor: pointer;
+    padding: 0;
+    color: #999999;
+    font-size: 18px;
+    height: 40px; /* Igual a la altura del input */
+}
+
+/* Posicionamiento de los iconos del ojo y la llave */
+.password-container #togglePassword {
+    right: 60px; /* Ajuste para el botón de alternar contraseña */
+}
+
+.password-container #generatePasswordBtn {
+    right: 10px; /* Ajuste para el botón de generar contraseña */
+}
+
+/* Cambia el color al pasar el mouse sobre el botón */
+.password-container .eye-icon:hover,
+.password-container .key-icon:hover {
+    color: #666; /* Cambia el color al pasar el mouse sobre el icono */
+}
+.profile-picture-selection h4 {
+    color: white; /* Hace que el título sea blanco */
+}
+
+.image-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.image-options label {
+    flex-basis: 30%; /* Hace que cada imagen ocupe aproximadamente el 30% del ancho del contenedor */
+    margin-bottom: 15px; /* Añade un espacio debajo de cada fila */
+    text-align: center; /* Centra las imágenes en su contenedor */
+}
+
+.profile-image {
+    width: 100%; /* Hace que la imagen ocupe el 100% de su contenedor */
+    height: auto;
+    border-radius: 50%; /* Hace que la imagen sea circular */
+    border: 2px solid #ffffff; /* Borde blanco */
+    object-fit: cover; /* Asegura que la imagen cubra el área de forma proporcionada */
+    transition: border-color 0.3s;
+}
+
+.profile-image:hover {
+    border-color: #ffcc00; /* Cambia el color del borde al pasar el mouse */
+}
+.custom-upload {
+    margin-top: 15px;
+    text-align: center;
+}
+
+#customImage {
+    display: block;
+    margin: 10px auto;
+}
+
+#previewImage {
+    display: block;
+    width: 30%;
+    height: auto;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    object-fit: cover;
+    margin: 10px auto;
+}
+

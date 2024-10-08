@@ -58,6 +58,7 @@ public class authServicio {
             .username(request.getUsername())
             .correo(request.getCorreo())
             .celular(request.getCelular())
+            .perfil(request.getPerfil())
             .password(passwordEncoder.encode(request.getPassword()))
             .rol(role.USER)
             .build();
