@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Gallery SPA</title>
+    <link rel="stylesheet" href="../Css/pruebasCss.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Video Gallery</h1>
+
+        <!-- Contenedor de los videos listados -->
+        <div id="videos-container" class="videos-list">
+            <!-- Aquí se cargarán los videos -->
+        </div>
+
+        <!-- Sección de reproducción del video -->
+        <div id="video-player-container" class="video-player">
+            <h2 id="video-title">Selecciona un video para reproducir</h2>
+            <p id="video-description"></p>
+            <video id="video-player" controls>
+                <source id="video-source" src="" type="video/mp4">
+                Tu navegador no soporta la reproducción de este video.
+            </video>
+        </div>
+    </div>
+
+    <script src="../JS/pruebaLista.js"></script> <!-- Archivo JS para el listado de videos -->
+</body>
+</html>
+
+

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
 
 import Trabajo.Ingenieria.Servicios.clienteServicio;
 import Trabajo.Ingenieria.Servicios.videosServicio;
@@ -14,7 +15,6 @@ import Trabajo.Ingenieria.Entidades.videos;
 
 import java.util.Arrays;
 import java.util.List;
-
 import java.io.IOException;
 
 @RestController
@@ -31,14 +31,23 @@ public class videosControlador {
     @RequestParam("titulo") String titulo, @RequestParam("descripcion") String descripcion) throws IOException {
         usuario user = cliente.findByUsername(alias);
         videos video = videoService.saveVideo(file, user, titulo, descripcion);
-        Long videoId = video.getIdVideo();
-        return ResponseEntity.ok(videoId);
+        return ResponseEntity.ok(video.getIdVideo());
     }
 
     @GetMapping("/Lista")
-    public ResponseEntity<List<videos>> getAllVideos() {
+    public List<videos> getAllVideos() {
         List<videos> videoList = videoService.getAllVideos();
-        return ResponseEntity.ok(videoList);
+        return videoList;
+    }
+
+    @GetMapping("/obtenerInfo")
+    public ResponseEntity<videos> obtenerInfo(Long id){
+        return ResponseEntity.ok(videoService.findById(id));
+    }
+
+    @GetMapping("/ver")
+    public ResponseEntity<Resource> streamVideo(@RequestParam("id") Long id) throws IOException {
+        return videoService.streamVideo(id);
     }
 
     @GetMapping("/categorias")

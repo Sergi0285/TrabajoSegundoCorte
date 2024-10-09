@@ -8,7 +8,7 @@ import Trabajo.Ingenieria.Entidades.videoCategoria;
 @Repository
 public class videoCategoriaRepositorio {
     @Autowired
-    private videoCategoriaCRUDrepositorio video;
+    private videoCategoriaCRUDRepositorio video;
 
     public videoCategoria save(videoCategoria v){
         return video.save(v);
