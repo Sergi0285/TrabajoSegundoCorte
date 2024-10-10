@@ -4,10 +4,41 @@ window.onload = function() {
     verificarTokenYRedireccionarALogin();
     categorias();
     $('#video').on('change', function() {
-        // Obtener el nombre del archivo
-        const fileName = $(this).val().split('\\').pop(); // Para obtener solo el nombre del archivo
-        // Actualizar el label con el nombre del archivo
-        $(this).next('.custom-file-label').html(fileName);
+        const file = this.files[0];
+        if (file) {
+            const fileType = file.type;
+            const allowedTypes = ['video/mp4', 'video/mpeg', 'video/ogg', 'video/webm']; // Tipos permitidos para videos
+
+            // Validar el tipo de archivo
+            if (!allowedTypes.includes(fileType)) {
+                alert("Por favor, selecciona un archivo de video válido (mp4, mpeg, ogg, webm).");
+                $(this).val(''); // Limpiar el input
+                $(this).next('.custom-file-label').html("Elige un archivo"); // Resetear el label
+                return;
+            }
+            // Obtener el nombre del archivo
+            const fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').html(fileName);
+        }
+    });
+
+    $('#image').on('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const fileType = file.type;
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/bmp']; // Tipos permitidos para imágenes
+
+            // Validar el tipo de archivo
+            if (!allowedTypes.includes(fileType)) {
+                alert("Por favor, selecciona un archivo de imagen válido (jpeg, png, gif, bmp).");
+                $(this).val(''); // Limpiar el input
+                $(this).next('.custom-file-label').html("Elige un archivo"); // Resetear el label
+                return;
+            }
+            // Obtener el nombre del archivo
+            const fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').html(fileName);
+        }
     });
 }
 
@@ -26,15 +57,16 @@ function subirVideo() {
     // Obtener valores del formulario
     var title = $('#title').val();
     var description = $('#description').val();
-    var file = $('#video')[0].files[0];
+    var videoFile = $('#video')[0].files[0];
+    var imageFile = $('#image')[0].files[0] || null; // Tomar la imagen si existe
     
     // Obtener categorías seleccionadas
     const selectedCategories = $('input[type="checkbox"]:checked').map(function() {
-        return this.value; // Obtener el valor (nombre de la categoría)
+        return this.value;
     }).get();
 
     // Validar que todos los campos están completos
-    if (!title || !description || !file || selectedCategories.length === 0) {
+    if (!title || !description || !videoFile || selectedCategories.length === 0) {
         alert("Por favor, completa todos los campos y selecciona al menos una categoría.");
         return;
     }
@@ -43,15 +75,16 @@ function subirVideo() {
     var formData = new FormData();
     formData.append("titulo", title);
     formData.append("descripcion", description);
-    formData.append("file", file);
-    formData.append("alias", username); // Asegúrate de que `username` esté definido
+    formData.append("file", videoFile); // Subir el video
+    formData.append("alias", username); 
+    formData.append("image", imageFile);
 
     // Subir el video
     $.ajax({
-        url: '/videos/upload',  // Cambia la URL al endpoint adecuado
+        url: '/videos/upload',
         type: 'POST',
         headers: {
-            'Authorization': 'Bearer ' + token // Asegúrate de que `token` esté definido
+            'Authorization': 'Bearer ' + token
         },
         data: formData,
         processData: false,
@@ -60,23 +93,22 @@ function subirVideo() {
             alert("Video subido correctamente! ID: " + videoId);
             console.log(videoId);
             $.ajax({
-                    url: '/categoria/add',  // Cambia la URL al endpoint adecuado
-                    type: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + token // Asegúrate de que `token` esté definido
-                    },
-                    data: {
-                        Id: videoId, // Asegúrate de que videoId tenga un valor válido
-                        categorias: selectedCategories // Asegúrate de que sea un array de categorías
-                    },
-                    success: function(response) {
-                        alert("Categorías agregadas correctamente.");
-                        // Aquí puedes actualizar la UI si es necesario
-                    },
-                    error: function(xhr, status, error) {
-                        alert("Error al agregar categorías: " + error);
-                    }
-                });
+                url: '/categoria/add',
+                type: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                data: {
+                    Id: videoId,
+                    categorias: selectedCategories
+                },
+                success: function(response) {
+                    alert("Categorías agregadas correctamente.");
+                },
+                error: function(xhr, status, error) {
+                    alert("Error al agregar categorías: " + error);
+                }
+            });
         },
         error: function(xhr, status, error) {
             alert("Error al subir el video: " + error);

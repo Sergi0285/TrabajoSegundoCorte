@@ -19,17 +19,7 @@ public class RabbitMQConfig {
     public Queue colaMiniatura() {
         return new Queue("miniatura.cola", true);
     }
-
-    @Bean
-    public Queue colaCategorias() {
-        return new Queue("categorias.cola", true);
-    }
-
-    @Bean
-    public Queue colaNotificacionVideoSubido() {
-        return new Queue("notificacion.cola", true);
-    }
-
+    
     @Bean
     public Queue colaSubirVideo() {
         return new Queue("video.cola", true);

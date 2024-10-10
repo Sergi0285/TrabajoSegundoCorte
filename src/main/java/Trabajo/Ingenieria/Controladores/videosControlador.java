@@ -27,10 +27,11 @@ public class videosControlador {
     private clienteServicio cliente;
 
     @PostMapping("/upload")
-    public ResponseEntity<Long> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam("alias") String alias, 
+    public ResponseEntity<Long> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam("image") MultipartFile imageFile,
+    @RequestParam("alias") String alias, 
     @RequestParam("titulo") String titulo, @RequestParam("descripcion") String descripcion) throws IOException {
         usuario user = cliente.findByUsername(alias);
-        videos video = videoService.saveVideo(file, user, titulo, descripcion);
+        videos video = videoService.saveVideo(file, imageFile ,user, titulo, descripcion);
         return ResponseEntity.ok(video.getIdVideo());
     }
 

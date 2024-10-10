@@ -19,10 +19,16 @@ public class RabbitMQConsumers {
 
     // Listener para almacenar el video
     @RabbitListener(queues = "video.cola")
-    public void storeVideo(@Payload Map<String, String> message) throws IOException {
+    public void storeVideo(@Payload Map<String, String> message) throws IOException, InterruptedException {
         String videoPath = (String) message.get("path");
         String file = (String) message.get("fileData");
         videoService.guardarVideo(videoPath, file);
     }
     
+    @RabbitListener(queues = "miniatura.cola")
+    public void storeMiniatura(@Payload Map<String, String> message) throws IOException, InterruptedException {
+        String imgPath = (String) message.get("urlminiatura");
+        String file = (String) message.get("miniatura");
+        videoService.guardarMiniatura(file, imgPath);
+    }
 }
