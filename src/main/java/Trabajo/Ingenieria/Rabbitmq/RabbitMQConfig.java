@@ -24,4 +24,14 @@ public class RabbitMQConfig {
     public Queue colaSubirVideo() {
         return new Queue("video.cola", true);
     }
+
+    @Bean
+    public Queue colaAddComentario() {
+        return new Queue("comentario.cola.add", true);
+    }
+
+    @Bean
+    public Queue colaDeleteComentario() {
+        return new Queue("comentario.cola.delete", true);
+    }
 }
