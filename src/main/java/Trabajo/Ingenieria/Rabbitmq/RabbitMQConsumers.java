@@ -44,7 +44,6 @@ public class RabbitMQConsumers {
         videoService.guardarMiniatura(file, imgPath);
     }
 
-    // Listener para almacenar comentarios
     @RabbitListener(queues = "comentario.cola.add")
     public void addComentario(@Payload Map<String, String> message) {
         comentarios comentario = new comentarios();
@@ -54,18 +53,24 @@ public class RabbitMQConsumers {
         // Obtener el video a partir del ID y asignarlo al comentario
         Long videoId = Long.valueOf(message.get("video"));
         videos video = videoService.findById(videoId);
-        comentario.setVideo(video);
-
-        // Obtener el usuario por nombre de usuario
-        String username = message.get("usuario"); // Suponiendo que el nombre de usuario viene en el mensaje
-        usuario user = clienteServicio.findByUsername(username);
-        if (user != null) { // Verificar si se encontró el usuario
-            comentario.setUsuario(user); // Asignar el usuario encontrado
+        if (video != null) {
+            comentario.setVideo(video);
         } else {
-            // Manejo de errores si no se encuentra el usuario
-            System.err.println("Usuario no encontrado: " + username);
+            System.err.println("Video no encontrado: " + videoId);
+            return;
         }
 
+        // Obtener el usuario por nombre de usuario
+        String username = message.get("usuario");
+        usuario user = clienteServicio.findByUsername(username);
+        if (user != null) {
+            comentario.setUsuario(user);
+        } else {
+            System.err.println("Usuario no encontrado: " + username);
+            return;
+        }
+
+        // Guardar el comentario
         comentarioServicio.addComentario(comentario);
     }
 

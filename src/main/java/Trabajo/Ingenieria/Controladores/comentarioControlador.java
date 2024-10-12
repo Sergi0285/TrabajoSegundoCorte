@@ -24,37 +24,39 @@ public class comentarioControlador {
     private comentarioServicio comentarioServicio;
 
     @Autowired
-    private videosServicio videoService;
+    private videosServicio videoServicio;
 
-    @PostMapping("/add")
-    public ResponseEntity<?> addComentario(@RequestBody Map<String, String> request) {
-        String comentarioText = request.get("comentario");
-        String username = request.get("usuario");
-        Long videoId = Long.valueOf(request.get("video"));
+    @PostMapping("/agregar")
+    public ResponseEntity<String> agregarComentario(
+            @RequestBody Map<String, String> request) {
 
-        // Obtener el video
-        videos video = videoService.findById(videoId);
+        String contenidoComentario = request.get("comentario");
+        Long videoId = Long.parseLong(request.get("videoId"));
+        String username = request.get("username");
+
+        // Buscar el video por su ID
+        videos video = videoServicio.findById(videoId);
         if (video == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Video no encontrado");
+            return new ResponseEntity<>("Video no encontrado", HttpStatus.NOT_FOUND);
         }
 
-        // Obtener el usuario por nombre de usuario
+        // Buscar el usuario por su nombre de usuario
         usuario user = clienteServicio.findByUsername(username);
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+            return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
         }
 
-        // Crear el comentario
+        // Crear el comentario y asociar el video y el usuario
         comentarios comentario = new comentarios();
-        comentario.setComentario(comentarioText);
-        comentario.setFechaComentario(new java.sql.Date(System.currentTimeMillis()));
+        comentario.setComentario(contenidoComentario);
+        //comentario.setFechaComentario(Date.valueOf(LocalDate.now()));
         comentario.setVideo(video);
-        comentario.setUsuario(user); // Asignar el usuario encontrado
+        comentario.setUsuario(user);
 
         // Guardar el comentario
         comentarioServicio.addComentario(comentario);
 
-        return ResponseEntity.ok("Comentario guardado exitosamente");
+        return new ResponseEntity<>("Comentario agregado exitosamente", HttpStatus.CREATED);
     }
 
 

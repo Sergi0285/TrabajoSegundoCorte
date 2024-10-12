@@ -1,9 +1,13 @@
 package Trabajo.Ingenieria.Servicios;
 
+import org.hibernate.mapping.Map;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import Trabajo.Ingenieria.Entidades.comentarios;
+import Trabajo.Ingenieria.Entidades.usuario;
+import Trabajo.Ingenieria.Entidades.videos;
 import Trabajo.Ingenieria.Repositorios.comentarioRepositorio;
 
 import java.util.List;
@@ -12,10 +16,14 @@ import java.util.List;
 public class comentarioServicio {
 
     @Autowired
+    private clienteServicio clienteServicio;
+
+    @Autowired
+    private videosServicio videosServicio;
+
+    @Autowired
     private comentarioRepositorio comentarioRepositorio;
 
-    // Listener para agregar un comentario
-    @RabbitListener(queues = "comentario.cola.add")
     public comentarios addComentario(comentarios comentario) {
         return comentarioRepositorio.save(comentario);
     }
@@ -30,4 +38,6 @@ public class comentarioServicio {
     public List<comentarios> getComentariosByVideo(Long videoId) {
         return comentarioRepositorio.findByVideo(videoId);
     }
+
+    
 }

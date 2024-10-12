@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Anime Template">
@@ -67,6 +67,7 @@
             <div id="mobile-menu-wrap"></div>
         </div>
     </header>
+
     <div class="container">
         <h1>Video Gallery</h1>
 
@@ -86,16 +87,15 @@
         </div>
 
         <!-- Sección de comentarios -->
-        <div id="comments-section">
+        <div id="comments-container">
             <h3>Comentarios</h3>
-            <div id="comments-container">
+            <div id="comments-list">
                 <!-- Aquí se cargarán los comentarios -->
             </div>
-            <form id="comment-form">
-                <textarea id="comment-text" placeholder="Escribe tu comentario aquí..." required></textarea>
-                <button type="submit">Enviar</button>
-            </form>
+            <textarea id="comment-input" placeholder="Escribe tu comentario aquí..."></textarea>
+            <button id="submit-comment" data-video-id="">Agregar Comentario</button>
         </div>
+
     </div>
 
     <script src="../recursosPlantilla/Js/jquery-3.3.1.min.js"></script>
@@ -106,6 +106,7 @@
     <script src="../recursosPlantilla/Js/jquery.slicknav.js"></script>
     <script src="../recursosPlantilla/Js/owl.carousel.min.js"></script>
     <script src="../recursosPlantilla/Js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
     <script src="../JS/pruebaLista.js"></script> <!-- Archivo JS para el listado de videos -->
 </body>
 </html>

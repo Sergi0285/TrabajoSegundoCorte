@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import Trabajo.Ingenieria.Entidades.comentarios;
 import Trabajo.Ingenieria.Entidades.videos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -26,13 +27,12 @@ public class comentarioRepositorio {
         return comentarioCRUDrepositorio.findById(id).orElse(null);
     }
 
-    // Método para encontrar todos los comentarios de un video específico
     public List<comentarios> findByVideo(Long videoId) {
-        videos video = videoRepositorio.findById(videoId); // Obtener el objeto videos
+        videos video = videoRepositorio.findById(videoId);
         if (video != null) {
             return comentarioCRUDrepositorio.findByVideo(video);
         }
-        return null; // O lanzar una excepción
+        return new ArrayList<>(); // Devuelve una lista vacía si no se encuentra el video
     }
 
     // Método para eliminar un comentario por su ID
@@ -43,4 +43,5 @@ public class comentarioRepositorio {
         }
         return false;
     }
+
 }
