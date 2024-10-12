@@ -6,6 +6,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import Trabajo.Ingenieria.Entidades.comentarios;
 import Trabajo.Ingenieria.Entidades.usuario;
@@ -48,7 +50,19 @@ public class RabbitMQConsumers {
     public void addComentario(@Payload Map<String, String> message) {
         comentarios comentario = new comentarios();
         comentario.setComentario(message.get("comentario"));
-        comentario.setFechaComentario(java.sql.Date.valueOf(message.get("fechaComentario")));
+
+        // Define el formato que esperas en la cadena
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // Cambia esto según tu formato
+        LocalDateTime fechaComentario;
+
+        try {
+            // Intenta parsear la fecha usando el formato definido
+            fechaComentario = LocalDateTime.parse(message.get("fechaComentario"), formatter);
+            comentario.setFechaComentario(fechaComentario);
+        } catch (Exception e) {
+            System.err.println("Error al parsear la fecha: " + e.getMessage());
+            return; // O maneja el error de otra forma
+        }
 
         // Obtener el video a partir del ID y asignarlo al comentario
         Long videoId = Long.valueOf(message.get("video"));
@@ -80,4 +94,18 @@ public class RabbitMQConsumers {
         Long idComentario = Long.valueOf(message.get("idComentario"));
         comentarioServicio.deleteComentario(idComentario);
     }
+
+    @RabbitListener(queues = "comentario.cola.edit")
+    public void editComentario(@Payload Map<String, String> message) {
+        Long idComentario = Long.valueOf(message.get("idComentario"));
+        String nuevoComentario = message.get("nuevoComentario");
+
+        comentarios actualizado = comentarioServicio.editComentario(idComentario, nuevoComentario);
+        if (actualizado != null) {
+            System.out.println("Comentario actualizado exitosamente: " + actualizado.getComentario());
+        } else {
+            System.err.println("Comentario no encontrado: " + idComentario);
+        }
+    }
+
 }

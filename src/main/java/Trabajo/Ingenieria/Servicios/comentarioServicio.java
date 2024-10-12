@@ -39,5 +39,12 @@ public class comentarioServicio {
         return comentarioRepositorio.findByVideo(videoId);
     }
 
-    
+    public comentarios editComentario(Long id, String nuevoComentario) {
+        comentarios comentario = comentarioRepositorio.findById(id);
+        if (comentario != null) {
+            comentario.setComentario(nuevoComentario);
+            return comentarioRepositorio.save(comentario);
+        }
+        return null; // o lanza una excepción si prefieres
+    }
 }

@@ -44,4 +44,8 @@ public class comentarioRepositorio {
         return false;
     }
 
+    // Método para actualizar un comentario
+    public comentarios updateComentario(comentarios comentario) {
+        return comentarioCRUDrepositorio.save(comentario);
+    }
 }

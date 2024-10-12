@@ -31,6 +31,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Queue colaEditComentario() {
+        return new Queue("comentario.cola.edit", true);
+    }
+
+    @Bean
     public Queue colaDeleteComentario() {
         return new Queue("comentario.cola.delete", true);
     }

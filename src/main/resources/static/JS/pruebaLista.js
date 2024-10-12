@@ -4,21 +4,36 @@ var tokenParts = token.split('.');
 var tokenPayload = JSON.parse(atob(tokenParts[1]));
 var username = tokenPayload.sub;
 
+let currentEditingCommentId = null; // Variable para guardar el ID del comentario que se está editando
 
 $(document).ready(function() {
     verificarTokenYRedireccionarALogin();
     loadVideos();
-    
+
     $('#submit-comment').on('click', function() {
         const videoId = $(this).data('video-id');
         const comentario = $('#comment-input').val();
-        
+
         if (comentario) {
             agregarComentario(videoId, comentario);
             $('#comment-input').val(''); // Limpiar el campo de texto
         }
     });
+
+    $('#save-edit-comment').on('click', function() {
+        const newComment = $('#edit-comment-input').val();
+        if (currentEditingCommentId && newComment) {
+            editarComentario(currentEditingCommentId, newComment);
+            $('#editCommentModal').hide(); // Ocultar el modal
+            $('#edit-comment-input').val(''); // Limpiar el campo de texto del modal
+        }
+    });
+
+    $('#close-modal').on('click', function() {
+        $('#editCommentModal').hide(); // Ocultar el modal
+    });
 });
+
 
 function verificarTokenYRedireccionarALogin() {
     if (token === null) {
@@ -103,6 +118,7 @@ function loadComments(videoId) {
                         </p>
                         <div class="options-menu">⋮
                             <div class="options-menu-content">
+                                <a href="#" class="edit-comment" data-id="${comentario.idComentario}" data-comment="${comentario.comentario}">Editar</a>
                                 <a href="#" class="delete-comment" data-id="${comentario.idComentario}">Eliminar</a>
                             </div>
                         </div>
@@ -111,6 +127,15 @@ function loadComments(videoId) {
 
                 comentarioElement.find('.options-menu').on('click', function() {
                     $(this).find('.options-menu-content').toggle();
+                });
+
+                // Manejo de la edición de comentarios
+                comentarioElement.find('.edit-comment').on('click', function(e) {
+                    e.preventDefault();
+                    currentEditingCommentId = $(this).data('id'); // Guardar el ID del comentario
+                    const currentCommentText = $(this).data('comment'); // Obtener el texto actual del comentario
+                    $('#edit-comment-input').val(currentCommentText); // Establecer el texto en el modal
+                    $('#editCommentModal').show(); // Mostrar el modal
                 });
 
                 comentarioElement.find('.delete-comment').on('click', function(e) {
@@ -125,6 +150,59 @@ function loadComments(videoId) {
         error: function(error) {
             console.error('Error al cargar los comentarios:', error);
         }
+    });
+}
+
+function editarComentario(comentarioId, nuevoComentario) {
+    $.ajax({
+        url: `/comentarios/editar/${comentarioId}`, // Cambia esta URL según tu API
+        type: 'PUT', // Usar PUT para editar
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({
+            comentario: nuevoComentario,
+            username: username
+        }),
+        success: function(response) {
+            console.log('Comentario editado:', response);
+            loadComments(videoId); // Volver a cargar los comentarios después de editar
+        },
+        error: function(error) {
+            console.error('Error al editar el comentario:', error);
+        }
+    });
+}
+
+
+function abrirModalEdicion(comentarioId, textoComentario, videoId) {
+    // Aquí deberías crear el HTML para el modal
+    const modalHTML = $(`
+        <div id="edit-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Editar Comentario</h2>
+                <textarea id="edit-comment-input">${textoComentario}</textarea>
+                <button id="save-edit" data-id="${comentarioId}" data-video-id="${videoId}">Guardar Cambios</button>
+            </div>
+        </div>
+    `);
+
+    $('body').append(modalHTML);
+
+    // Evento para cerrar el modal
+    modalHTML.find('.close-modal').on('click', function() {
+        modalHTML.remove();
+    });
+
+    // Evento para guardar el comentario editado
+    modalHTML.find('#save-edit').on('click', function() {
+        const nuevoComentario = $('#edit-comment-input').val();
+        const comentarioId = $(this).data('id');
+        const videoId = $(this).data('video-id');
+        editarComentario(comentarioId, nuevoComentario, videoId);
+        modalHTML.remove();
     });
 }
 

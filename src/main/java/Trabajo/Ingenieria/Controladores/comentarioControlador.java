@@ -2,6 +2,8 @@ package Trabajo.Ingenieria.Controladores;
 
 import java.util.Map;
 import java.util.List;
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +29,7 @@ public class comentarioControlador {
     private videosServicio videoServicio;
 
     @PostMapping("/agregar")
-    public ResponseEntity<String> agregarComentario(
-            @RequestBody Map<String, String> request) {
-
+    public ResponseEntity<String> agregarComentario(@RequestBody Map<String, String> request) {
         String contenidoComentario = request.get("comentario");
         Long videoId = Long.parseLong(request.get("videoId"));
         String username = request.get("username");
@@ -49,7 +49,7 @@ public class comentarioControlador {
         // Crear el comentario y asociar el video y el usuario
         comentarios comentario = new comentarios();
         comentario.setComentario(contenidoComentario);
-        //comentario.setFechaComentario(Date.valueOf(LocalDate.now()));
+        comentario.setFechaComentario(LocalDateTime.now()); // Establecer la fecha y hora actual
         comentario.setVideo(video);
         comentario.setUsuario(user);
 
@@ -58,6 +58,7 @@ public class comentarioControlador {
 
         return new ResponseEntity<>("Comentario agregado exitosamente", HttpStatus.CREATED);
     }
+
 
 
     // Método para eliminar un comentario
@@ -77,4 +78,18 @@ public class comentarioControlador {
         List<comentarios> comentariosList = comentarioServicio.getComentariosByVideo(videoId);
         return ResponseEntity.ok(comentariosList);
     }
+
+    // En comentarioControlador.java
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<String> editarComentario(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        String nuevoComentario = request.get("comentario");
+
+        comentarios comentarioActualizado = comentarioServicio.editComentario(id, nuevoComentario);
+        if (comentarioActualizado != null) {
+            return ResponseEntity.ok("Comentario actualizado exitosamente");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
