@@ -1,5 +1,9 @@
 let token = localStorage.getItem('token');
-let username = localStorage.getItem('username');
+
+var tokenParts = token.split('.');
+var tokenPayload = JSON.parse(atob(tokenParts[1]));
+var username = tokenPayload.sub;
+
 
 $(document).ready(function() {
     verificarTokenYRedireccionarALogin();
@@ -108,7 +112,7 @@ function agregarComentario(videoId, comentario) {
     console.log(videoId);
     console.log(comentario);
     $.ajax({
-        url: "http://localhost:8080/comentarios/agregar",
+        url: "/comentarios/agregar",
         type: 'POST',
         headers: {
             'Authorization': 'Bearer ' + token,
