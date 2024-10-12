@@ -1,16 +1,18 @@
+// Variable global para guardar la imagen de perfil
+let profileImage = "";
+
 // Función para alternar la visibilidad de la contraseña
 function togglePasswordVisibility() {
     const passwordField = document.getElementById('usuariocontrasena');
     const eyeIcon = document.getElementById('eyeIcon');
 
+    // Alterna el tipo de input y el icono del ojo
     if (passwordField.type === 'password') {
         passwordField.type = 'text';
-        eyeIcon.classList.remove('fa-eye');
-        eyeIcon.classList.add('fa-eye-slash');
+        eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
     } else {
         passwordField.type = 'password';
-        eyeIcon.classList.remove('fa-eye-slash');
-        eyeIcon.classList.add('fa-eye');
+        eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
     }
 }
 
@@ -25,15 +27,15 @@ function generatePassword() {
     let password = "";
 
     // Garantizar al menos un carácter de cada tipo
-    password += lowercase.charAt(Math.floor(Math.random() * lowercase.length));
-    password += uppercase.charAt(Math.floor(Math.random() * uppercase.length));
-    password += numbers.charAt(Math.floor(Math.random() * numbers.length));
-    password += specialChars.charAt(Math.floor(Math.random() * specialChars.length));
+    password += getRandomChar(lowercase);
+    password += getRandomChar(uppercase);
+    password += getRandomChar(numbers);
+    password += getRandomChar(specialChars);
 
     // Rellenar el resto de la contraseña con caracteres aleatorios
     const allChars = lowercase + uppercase + numbers + specialChars;
     for (let i = 4; i < length; i++) {
-        password += allChars.charAt(Math.floor(Math.random() * allChars.length));
+        password += getRandomChar(allChars);
     }
 
     // Mezclar los caracteres para que no siga siempre el mismo patrón
@@ -41,70 +43,137 @@ function generatePassword() {
 
     document.getElementById("usuariocontrasena").value = password;
 }
-$(document).ready(function() {
-    $('#togglePassword').click(togglePasswordVisibility);
-    $('#generatePasswordBtn').click(generatePassword);
-});
+
+// Función auxiliar para obtener un carácter aleatorio
+function getRandomChar(chars) {
+    return chars.charAt(Math.floor(Math.random() * chars.length));
+}
+
+// Función para cargar la imagen por defecto y convertirla a un archivo
+function loadDefaultImage(imageUrl, callback) {
+    const img = new Image();
+    img.crossOrigin = "Anonymous"; // Necesario para evitar problemas de CORS
+    img.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob(function(blob) {
+            callback(new File([blob], 'defaultProfileImage.png', { type: 'image/png' }));
+        }, 'image/png');
+    };
+    img.src = imageUrl;
+}
+
 // Función para guardar el usuario
 function saveUsuario() {
-    let name = $("#usuarioname").val();
-    let mail = $("#usuariocorreo").val();
-    let alias = $("#usuarioalias").val();
-    let cel = $("#usuariocel").val();
-    let contrasena = $("#usuariocontrasena").val();
+    console.log("Función saveUsuario llamada.");
+    const name = $('#usuarioname').val();
+    const mail = $('#usuariocorreo').val();
+    const alias = $('#usuarioalias').val();
+    const cel = $('#usuariocel').val();
+    const contrasena = $('#usuariocontrasena').val();
+    const imageInput = document.getElementById('profileImageInput'); // Input de imagen
+    const defaultImageSelect = $('#defaultImageSelect').val(); // Obtener la opción de imagen por defecto
 
-    if (name === '' || mail === '' || alias === '' || cel === '' || contrasena === '') {
-        alert('Por favor, complete todos los campos.');
-        return; // Detener la ejecución si algún campo está vacío
-    }
-    // Obtener la imagen de perfil seleccionada
-    const selectedImage = document.querySelector('input[name="profilePicture"]:checked');
-    let profileImage = "";
-    if (selectedImage) {
-        profileImage = selectedImage.value;
-    }
-
-    // Verificar que se haya seleccionado una imagen
-    if (profileImage === "") {
-        alert("Por favor selecciona una imagen de perfil.");
+    // Verificar que todos los campos estén completos
+    if (!name || !mail || !alias || !cel || !contrasena) {
+        alert('Por favor, completa todos los campos.');
         return;
     }
 
-    // Crear un objeto de usuario para enviar al servidor
-    let data = {
-        nombre: name,
-        username: alias,
-        correo: mail,
-        celular: cel,
-        password: contrasena,
-        perfil: profileImage
-    };
+    const formData = new FormData();
+    formData.append('nombre', name);
+    formData.append('username', alias);
+    formData.append('correo', mail);
+    formData.append('celular', cel);
+    formData.append('password', contrasena);
 
-    // Enviar los datos al servidor usando fetch o AJAX
-    $.ajax({
-        url: '/auth/register',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(data),
-        success: function(response) {
-            localStorage.setItem('token', response.token);
-            alert('Usuario registrado correctamente.');
-            window.location.href = "/Vistas/inicioVista.html";
-        },
-        error: function(xhr, status, error) {
-            let errorMessage = 'Ocurrió un error inesperado. Inténtelo de nuevo.';
-    
-            // Verificar si el error es por alias ya en uso
-            if (xhr.status === 400 && xhr.responseText === 'alias ya en uso') {
-                errorMessage = 'El alias ya está en uso. Por favor, elija otro.';
-            } 
-            // Verificar si el error es por contraseñas no válidas
-            else if (xhr.status === 400 && xhr.responseText === 'contraseña inválida') {
-                errorMessage = 'La contraseña no cumple con los requisitos. Debe tener al menos 8 caracteres, incluir una letra mayúscula, un número y un carácter especial.';
+    // Función para manejar el envío del formulario
+    function submitFormData(file) {
+        formData.append('perfil', file);
+        $.ajax({
+            url: '/auth/register',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                localStorage.setItem('token', response.token);
+                alert('Usuario registrado correctamente.');
+                window.location.href = "/Vistas/inicioVista.html";
+            },
+            error: function(xhr) {
+                let errorMessage = 'Ocurrió un error inesperado. Inténtelo de nuevo.';
+                if (xhr.status === 400) {
+                    switch (xhr.responseText) {
+                        case 'alias ya en uso':
+                            errorMessage = 'El alias ya está en uso. Por favor, elija otro.';
+                            break;
+                        case 'contraseña inválida':
+                            errorMessage = 'La contraseña no cumple con los requisitos. Debe tener al menos 8 caracteres, incluir una letra mayúscula, un número y un carácter especial.';
+                            break;
+                    }
+                }
+                alert(errorMessage);
             }
-    
-            alert(errorMessage);
-            window.location.href = "/Vistas/registroVista.html";
+        });
+    }
+
+    // Manejo de imagen subida o por defecto
+    if (imageInput.files.length > 0) {
+        const file = imageInput.files[0];
+        console.log("Imagen subida por el usuario:", file);
+        submitFormData(file);
+    } else if (defaultImageSelect) {
+        loadDefaultImage(defaultImageSelect, submitFormData);
+    } else {
+        alert('Por favor, selecciona una imagen de perfil.');
+    }
+}
+
+// Función para previsualizar la imagen cargada
+function previewImage(event) {
+    const previewContainer = document.getElementById('customImagePreview');
+    previewContainer.src = ""; // Limpiar cualquier imagen previa
+    previewContainer.style.display = 'none'; // Ocultar la vista previa de la imagen
+
+    const file = event.target.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function() {
+            previewContainer.src = reader.result;
+            previewContainer.style.display = 'block'; // Mostrar la vista previa de la imagen
+        };
+
+        reader.readAsDataURL(file);
+    }
+}
+
+// Inicialización de eventos con jQuery
+$(document).ready(function() {
+    $('#togglePassword').click(togglePasswordVisibility);
+    $('#generatePasswordBtn').click(generatePassword);
+    $('#profileImageInput').change(previewImage); // Evento para previsualizar la imagen
+
+    // Manejar la selección de imágenes predeterminadas
+    $('#defaultImageSelect').change(function() {
+        const selectedImage = $(this).val();
+        const previewContainer = document.getElementById('customImagePreview');
+
+        if (selectedImage) {
+            previewContainer.src = selectedImage; // Cambiar la fuente de la imagen de vista previa
+            previewContainer.style.display = 'block'; // Mostrar la imagen de vista previa
+        } else {
+            previewContainer.style.display = 'none'; // Ocultar la imagen de vista previa si no hay selección
         }
     });
-}
+
+    $('#saveButton').click(function() {
+        console.log("Botón Guardar presionado.");
+        saveUsuario(); // Llama a la función saveUsuario
+    });
+});

@@ -13,7 +13,5 @@ public class registroPeticion {
     String username;
     String correo;
     String celular;
-    String perfil;
     String password;
-    
 }

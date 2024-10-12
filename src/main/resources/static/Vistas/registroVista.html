@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -9,11 +9,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Anime | Template</title>
 
-    <!-- Google Font -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Css Styles -->
+    <!-- CSS Styles -->
     <link rel="stylesheet" href="../recursosPlantilla/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="../recursosPlantilla/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="../recursosPlantilla/css/elegant-icons.css" type="text/css">
@@ -28,49 +28,6 @@
 
 <body>
 
-    <!-- Header Section Begin -->
-    <header class="header">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-2">
-                    <div class="header__logo">
-                        <a href="./index.html">
-                            <img src="img/logo.png" alt="">
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-8">
-                    <div class="header__nav">
-                        <nav class="header__menu mobile-menu">
-                            <ul>
-                                <li><a href="./index.html">Homepage</a></li>
-                                <li><a href="./categories.html">Categories <span class="arrow_carrot-down"></span></a>
-                                    <ul class="dropdown">
-                                        <li><a href="./categories.html">Categories</a></li>
-                                        <li><a href="./anime-details.html">Anime Details</a></li>
-                                        <li><a href="./anime-watching.html">Anime Watching</a></li>
-                                        <li><a href="./blog-details.html">Blog Details</a></li>
-                                        <li><a href="./signup.html">Sign Up</a></li>
-                                        <li><a href="./login.html">Login</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="./blog.html">Our Blog</a></li>
-                                <li><a href="#">Contacts</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="header__right">
-                        <a href="#" class="search-switch"><span class="icon_search"></span></a>
-                        <a href="./login.html"><span class="icon_profile"></span></a>
-                    </div>
-                </div>
-            </div>
-            <div id="mobile-menu-wrap"></div>
-        </div>
-    </header>
-    <!-- Header End -->
 
     <!-- Normal Breadcrumb Begin -->
     <section class="normal-breadcrumb set-bg" data-setbg="img/normal-breadcrumb.jpg">
@@ -78,8 +35,7 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="normal__breadcrumb__text">
-                        <h2>Sign Up</h2>
-                        <p>Welcome to the official Anime blog.</p>
+                        <h2>Registro de Ususario</h2>
                     </div>
                 </div>
             </div>
@@ -91,69 +47,69 @@
     <section class="signup spad">
         <div class="container">
             <div class="row">
-                <!-- Columna para el formulario -->
                 <div class="col-lg-6">
                     <div class="login__form">
-                        <h3>Registro de Usuario</h3>
+                        <form id="registrationForm">
+                            <!-- Grupo para el nombre -->
+                            <div class="form-group input-container">
+                                <span class="input-icon"><i class="fas fa-user"></i></span>
+                                <input id="usuarioname" class="form-control" placeholder="Nombre" required aria-label="Nombre del usuario">
+                            </div>
 
-                        <div class="input-container">
-                            <span class="input-icon"><i class="fas fa-user"></i></span>
-                            <input id="usuarioname" class="form-control" placeholder="Nombre" required>
-                        </div>
-                        
-                        <div class="input-container">
-                            <span class="input-icon"><i class="fas fa-envelope"></i></span>
-                            <input id="usuariocorreo" class="form-control" placeholder="Correo" required>
-                        </div>
-                        
-                        <div class="input-container">
-                            <span class="input-icon"><i class="fas fa-user-tag"></i></span>
-                            <input id="usuarioalias" class="form-control" placeholder="Alias" required>
-                        </div>
+                            <!-- Grupo para el correo -->
+                            <div class="form-group input-container">
+                                <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                                <input id="usuariocorreo" class="form-control" placeholder="Correo" type="email" required aria-label="Correo electrónico">
+                            </div>
 
-                        <div class="input-container">
-                            <span class="input-icon"><i class="fas fa-phone"></i></span>
-                            <input id="usuariocel" class="form-control" placeholder="Celular" required>
-                        </div>
+                            <!-- Grupo para el alias -->
+                            <div class="form-group input-container">
+                                <span class="input-icon"><i class="fas fa-user-tag"></i></span>
+                                <input id="usuarioalias" class="form-control" placeholder="Alias" required aria-label="Alias del usuario">
+                            </div>
 
-                        <div class="input-container password-container">
-                            <span class="input-icon"><i class="fas fa-lock"></i></span>
-                            <input id="usuariocontrasena" type="password" placeholder="Contraseña" required>
-                            <span class="eye-icon" id="togglePassword" title="Mostrar/Ocultar contraseña">
-                                <i class="fas fa-eye" id="eyeIcon"></i>
-                            </span>
-                            <span class="key-icon" id="generatePasswordBtn" title="Generar contraseña segura">
-                                <i class="fas fa-key"></i>
-                            </span>
-                        </div>
+                            <!-- Grupo para el celular -->
+                            <div class="form-group input-container">
+                                <span class="input-icon"><i class="fas fa-phone"></i></span>
+                                <input id="usuariocel" class="form-control" placeholder="Celular" required aria-label="Número de celular">
+                            </div>
 
-                        <button class="btn btn-primary" onclick="saveUsuario()">Registrarse</button>
-                        <h5>¿Tienes una cuenta? <a href="../Vistas/inicioVista.html">¡Inicia Sesión!</a></h5>
+                            <!-- Grupo para la contraseña -->
+                            <div class="form-group input-container password-container">
+                                <span class="input-icon"><i class="fas fa-lock"></i></span>
+                                <input id="usuariocontrasena" class="form-control" placeholder="Contraseña" type="password" required aria-label="Contraseña">
+                                <button type="button" id="togglePassword" class="btn btn-outline-secondary" aria-label="Mostrar/Ocultar Contraseña">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                                <button type="button" id="generatePasswordBtn" class="btn btn-outline-secondary" aria-label="Generar Contraseña">
+                                    <i class="fas fa-key"></i>
+                                </button>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" id="saveButton">Guardar Usuario</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <!-- Columna para las imágenes de perfil -->
                 <div class="col-lg-6">
-                    <div class="profile-picture-selection">
-                        <h4>Elige una imagen de perfil:</h4>
-                        <div class="image-options">
-                            <label>
-                                <input type="radio" name="profilePicture" value="./Imagenes/perfil1.png" required>
-                                <img src="../Imagenes/perfil1.png" alt="Profile 1" class="profile-image">
-                            </label>
-                            <label>
-                                <input type="radio" name="profilePicture" value="../Imagenes/perfil2.png">
-                                <img src="../Imagenes/perfil2.png" alt="Profile 2" class="profile-image">
-                            </label>
-                            <label>
-                                <input type="radio" name="profilePicture" value="../Imagenes/perfil3.png">
-                                <img src="../Imagenes/perfil3.png" alt="Profile 3" class="profile-image">
-                            </label>
-                            <label>
-                                <input type="radio" name="profilePicture" value="../Imagenes/perfil4.png">
-                                <img src="../Imagenes/perfil4.png" alt="Profile 4" class="profile-image">
-                            </label>
-                        </div>
-                    </div>                    
+                    <div class="form-group">
+                        <label for="profileImageInput">Selecciona una imagen de perfil:</label>
+                        <input type="file" id="profileImageInput" accept="image/*" />
+                        <img id="customImagePreview" src="" alt="Vista previa de la imagen" style="display: none; max-width: 100px; margin-top: 10px;" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="defaultImageSelect">O elige una imagen por defecto:</label>
+                        <select id="defaultImageSelect">
+                            <option value="">-- Seleccionar imagen por defecto --</option>
+                            <option value="../Imagenes/perfil1.png">Imagen 1</option>
+                            <option value="../Imagenes/perfil2.png">Imagen 2</option>
+                            <option value="../Imagenes/perfil3.png">Imagen 3</option>
+                            <!-- Agrega más opciones según sea necesario -->
+                        </select>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -162,32 +118,22 @@
 
     <!-- Footer Section Begin -->
     <footer class="footer">
-        <div class="page-up">
-            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
-        </div>
         <div class="container">
             <div class="row">
-                <div class="col-lg-3">
-                    <div class="footer__logo">
-                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                <div class="col-lg-6 col-md-6">
+                    <div class="footer__about">
+                        <h6>Sobre Nosotros</h6>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="footer__nav">
-                        <ul>
-                            <li class="active"><a href="./index.html">Homepage</a></li>
-                            <li><a href="./categories.html">Categories</a></li>
-                            <li><a href="./blog.html">Our Blog</a></li>
-                            <li><a href="#">Contacts</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3">
+                <div class="col-lg-6 col-md-6">
                     <div class="footer__social">
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                        <a href="#"><i class="fa fa-linkedin"></i></a>
-                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <h6>Síguenos</h6>
+                        <div class="footer__social__links">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -195,15 +141,16 @@
     </footer>
     <!-- Footer Section End -->
 
-    <!-- Js Plugins -->
+    <!-- JS Plugins -->
     <script src="../recursosPlantilla/js/jquery-3.3.1.min.js"></script>
     <script src="../recursosPlantilla/js/bootstrap.min.js"></script>
-    <script src="../recursosPlantilla/js/jquery.nice-select.min.js"></script>
-    <script src="../recursosPlantilla/js/jquery.plyr.min.js"></script>
+    <script src="../recursosPlantilla/js/plyr.js"></script>
+    <script src="../recursosPlantilla/js/nice-select.js"></script>
     <script src="../recursosPlantilla/js/owl.carousel.min.js"></script>
     <script src="../recursosPlantilla/js/slicknav.min.js"></script>
     <script src="../recursosPlantilla/js/main.js"></script>
     <script src="../JS/registroJs.js"></script>
+
 </body>
 
 </html>
