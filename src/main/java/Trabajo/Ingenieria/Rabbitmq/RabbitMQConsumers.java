@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatter;  
 
 import Trabajo.Ingenieria.Entidades.comentarios;
 import Trabajo.Ingenieria.Entidades.usuario;
@@ -92,20 +92,23 @@ public class RabbitMQConsumers {
     @RabbitListener(queues = "comentario.cola.delete")
     public void deleteComentario(@Payload Map<String, String> message) {
         Long idComentario = Long.valueOf(message.get("idComentario"));
-        comentarioServicio.deleteComentario(idComentario);
+        String username = message.get("username"); // Si se necesita para verificar la propiedad
+        comentarioServicio.deleteComentario(idComentario, username);
     }
 
     @RabbitListener(queues = "comentario.cola.edit")
     public void editComentario(@Payload Map<String, String> message) {
         Long idComentario = Long.valueOf(message.get("idComentario"));
         String nuevoComentario = message.get("nuevoComentario");
+        String username = message.get("username"); // Si se necesita para verificar la propiedad
 
-        comentarios actualizado = comentarioServicio.editComentario(idComentario, nuevoComentario);
+        comentarios actualizado = comentarioServicio.editComentario(idComentario, nuevoComentario, username);
         if (actualizado != null) {
             System.out.println("Comentario actualizado exitosamente: " + actualizado.getComentario());
         } else {
             System.err.println("Comentario no encontrado: " + idComentario);
         }
     }
+
 
 }
