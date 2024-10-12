@@ -2,7 +2,6 @@ package Trabajo.Ingenieria.Servicios;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ssl.SslProperties.Bundles.Watch.File;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;

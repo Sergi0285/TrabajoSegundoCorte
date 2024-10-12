@@ -28,6 +28,7 @@ public class comentarioControlador {
     @Autowired
     private videosServicio videoServicio;
 
+
     @PostMapping("/agregar")
     public ResponseEntity<String> agregarComentario(@RequestBody Map<String, String> request) {
         String contenidoComentario = request.get("comentario");
@@ -60,11 +61,23 @@ public class comentarioControlador {
     }
 
 
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<String> editarComentario(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        String nuevoComentario = request.get("comentario");
+        String username = request.get("username"); // Obtener el username desde el request
 
-    // Método para eliminar un comentario
+        comentarios comentarioActualizado = comentarioServicio.editComentario(id, nuevoComentario, username);
+        if (comentarioActualizado != null) {
+            return ResponseEntity.ok("Comentario actualizado exitosamente");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> eliminarComentario(@PathVariable Long id) {
-        boolean eliminado = comentarioServicio.deleteComentario(id);
+    public ResponseEntity<String> eliminarComentario(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        String username = request.get("username"); // Obtener el username desde el request
+        boolean eliminado = comentarioServicio.deleteComentario(id, username);
         if (eliminado) {
             return ResponseEntity.ok("Comentario eliminado exitosamente");
         } else {
@@ -77,19 +90,6 @@ public class comentarioControlador {
     public ResponseEntity<List<comentarios>> obtenerComentariosPorVideo(@PathVariable Long videoId) {
         List<comentarios> comentariosList = comentarioServicio.getComentariosByVideo(videoId);
         return ResponseEntity.ok(comentariosList);
-    }
-
-    // En comentarioControlador.java
-    @PutMapping("/editar/{id}")
-    public ResponseEntity<String> editarComentario(@PathVariable Long id, @RequestBody Map<String, String> request) {
-        String nuevoComentario = request.get("comentario");
-
-        comentarios comentarioActualizado = comentarioServicio.editComentario(id, nuevoComentario);
-        if (comentarioActualizado != null) {
-            return ResponseEntity.ok("Comentario actualizado exitosamente");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
     }
 
 }

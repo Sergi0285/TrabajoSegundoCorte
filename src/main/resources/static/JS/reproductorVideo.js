@@ -109,6 +109,9 @@ function loadComments(videoId) {
         success: function(comentarios) {
             $('#comments-list').empty();
             comentarios.forEach(comentario => {
+                const isOwner = comentario.usuario.username === username;
+
+                // Construir el elemento de comentario
                 const comentarioElement = $(`
                     <div class="comment-item">
                         <p>
@@ -116,33 +119,38 @@ function loadComments(videoId) {
                             ${comentario.comentario} 
                             <em class="comment-date">${comentario.fechaComentario}</em>
                         </p>
+                        ${isOwner ? `
                         <div class="options-menu">⋮
                             <div class="options-menu-content">
                                 <a href="#" class="edit-comment" data-id="${comentario.idComentario}" data-comment="${comentario.comentario}">Editar</a>
                                 <a href="#" class="delete-comment" data-id="${comentario.idComentario}">Eliminar</a>
                             </div>
-                        </div>
+                        </div>` : ''}
                     </div>
                 `);
 
-                comentarioElement.find('.options-menu').on('click', function() {
-                    $(this).find('.options-menu-content').toggle();
-                });
+                // Solo agregar eventos si el usuario es el propietario
+                if (isOwner) {
+                    comentarioElement.find('.options-menu').on('click', function() {
+                        $(this).find('.options-menu-content').toggle();
+                    });
 
-                // Manejo de la edición de comentarios
-                comentarioElement.find('.edit-comment').on('click', function(e) {
-                    e.preventDefault();
-                    currentEditingCommentId = $(this).data('id'); // Guardar el ID del comentario
-                    const currentCommentText = $(this).data('comment'); // Obtener el texto actual del comentario
-                    $('#edit-comment-input').val(currentCommentText); // Establecer el texto en el modal
-                    $('#editCommentModal').show(); // Mostrar el modal
-                });
+                    // Manejo de la edición de comentarios
+                    comentarioElement.find('.edit-comment').on('click', function(e) {
+                        e.preventDefault();
+                        currentEditingCommentId = $(this).data('id');
+                        const currentCommentText = $(this).data('comment');
+                        $('#edit-comment-input').val(currentCommentText);
+                        $('#editCommentModal').show();
+                    });
 
-                comentarioElement.find('.delete-comment').on('click', function(e) {
-                    e.preventDefault();
-                    const comentarioId = $(this).data('id');
-                    eliminarComentario(comentarioId, videoId);
-                });
+                    // Manejo de la eliminación de comentarios
+                    comentarioElement.find('.delete-comment').on('click', function(e) {
+                        e.preventDefault();
+                        const comentarioId = $(this).data('id');
+                        eliminarComentario(comentarioId, videoId);
+                    });
+                }
 
                 $('#comments-list').append(comentarioElement);
             });
@@ -152,6 +160,7 @@ function loadComments(videoId) {
         }
     });
 }
+
 
 function editarComentario(comentarioId, nuevoComentario) {
     $.ajax({
@@ -211,8 +220,12 @@ function eliminarComentario(comentarioId, videoId) {
         url: `/comentarios/delete/${comentarioId}`,
         type: 'DELETE',
         headers: {
-            'Authorization': 'Bearer ' + token
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
         },
+        data: JSON.stringify({
+            username: username
+        }),
         success: function(response) {
             console.log(response);
             loadComments(videoId); // Recargar comentarios después de eliminar
@@ -222,7 +235,6 @@ function eliminarComentario(comentarioId, videoId) {
         }
     });
 }
-
 
 function agregarComentario(videoId, comentario) {
     console.log(videoId);
@@ -247,4 +259,5 @@ function agregarComentario(videoId, comentario) {
             console.error('Error al agregar el comentario:', error);
         }
     });
+
 }
