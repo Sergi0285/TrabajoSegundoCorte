@@ -96,9 +96,29 @@ function loadComments(videoId) {
             comentarios.forEach(comentario => {
                 const comentarioElement = $(`
                     <div class="comment-item">
-                        <p><strong>${comentario.usuario.username}</strong>: ${comentario.comentario} <em>${comentario.fechaComentario}</em></p>
+                        <p>
+                            <span class="comment-author">${comentario.usuario.username}</span>: 
+                            ${comentario.comentario} 
+                            <em class="comment-date">${comentario.fechaComentario}</em>
+                        </p>
+                        <div class="options-menu">⋮
+                            <div class="options-menu-content">
+                                <a href="#" class="delete-comment" data-id="${comentario.idComentario}">Eliminar</a>
+                            </div>
+                        </div>
                     </div>
                 `);
+
+                comentarioElement.find('.options-menu').on('click', function() {
+                    $(this).find('.options-menu-content').toggle();
+                });
+
+                comentarioElement.find('.delete-comment').on('click', function(e) {
+                    e.preventDefault();
+                    const comentarioId = $(this).data('id');
+                    eliminarComentario(comentarioId, videoId);
+                });
+
                 $('#comments-list').append(comentarioElement);
             });
         },
@@ -107,6 +127,24 @@ function loadComments(videoId) {
         }
     });
 }
+
+function eliminarComentario(comentarioId, videoId) {
+    $.ajax({
+        url: `/comentarios/delete/${comentarioId}`,
+        type: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        success: function(response) {
+            console.log(response);
+            loadComments(videoId); // Recargar comentarios después de eliminar
+        },
+        error: function(error) {
+            console.error('Error al eliminar el comentario:', error);
+        }
+    });
+}
+
 
 function agregarComentario(videoId, comentario) {
     console.log(videoId);
