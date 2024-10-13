@@ -10,7 +10,7 @@ import Trabajo.Ingenieria.Entidades.videos;
 public class videosRepositorio {
 
     @Autowired
-    private videosCRUDRepositorio video;
+    private videosCRUDrepositorio video;
 
     public videos save(videos v){
         return video.save(v);

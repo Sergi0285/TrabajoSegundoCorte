@@ -27,6 +27,7 @@ public class jwtFiltroAutenticacion extends OncePerRequestFilter{
     private final jwtServicio jwtService;
     private final UserDetailsService userDetailsService;
 
+    @SuppressWarnings("null")
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {

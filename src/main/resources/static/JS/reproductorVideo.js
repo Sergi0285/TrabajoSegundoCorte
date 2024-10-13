@@ -4,6 +4,8 @@ var tokenParts = token.split('.');
 var tokenPayload = JSON.parse(atob(tokenParts[1]));
 var username = tokenPayload.sub;
 
+console.log(username);
+
 let currentEditingCommentId = null; // Variable para guardar el ID del comentario que se está editando
 
 $(document).ready(function() {

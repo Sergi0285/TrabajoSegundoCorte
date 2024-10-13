@@ -44,11 +44,13 @@ public class videosServicio {
         videoRepository.save(video);
 
         // Usar el ID del video para crear un nombre de archivo único ID + nombre original del archivo
+        @SuppressWarnings("null")
         String cleanFilename = file.getOriginalFilename().replaceAll("\\s+", "_");
         String newFilename = video.getIdVideo() + "_" + cleanFilename;
         Path videoPath = Paths.get(System.getProperty("user.dir"), VIDEO_DIRECTORY, newFilename);
         video.setUrl(videoPath.toString());
     
+        @SuppressWarnings("null")
         String extension = imageFile.getOriginalFilename().substring(imageFile.getOriginalFilename().lastIndexOf('.')); // Obtiene la extensión del archivo
         String nombreMiniatura = video.getIdVideo() + "_miniatura" + extension;   
         Path urlMiniatura = Paths.get(System.getProperty("user.dir"), MINIATURAS_DIRECTORY, nombreMiniatura);
