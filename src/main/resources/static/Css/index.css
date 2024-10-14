@@ -19,6 +19,17 @@
     width: 100%; /* Hace que la imagen ocupe todo el ancho */
     height: auto; /* Mantiene la relación de aspecto */
 }
+.ep, .comment, .view {
+    color: white; /* Cambia el color del texto a blanco */
+    background-color: transparent; /* Fondo transparente si no deseas un fondo */
+    font-size: 16px; /* Ajusta el tamaño de fuente según sea necesario */
+    margin: 5px 0; /* Espaciado vertical entre los elementos */
+}
+
+/* Opcional: si deseas cambiar el color de los iconos de Font Awesome */
+.ep i, .comment i, .view i {
+    color: white; /* Cambia el color de los iconos a blanco */
+}
 
 
 

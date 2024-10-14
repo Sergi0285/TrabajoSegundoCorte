@@ -14,6 +14,9 @@ function loadRandomVideos() {
     $.ajax({
         url: '/videos/randomVideos',
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function(videos) {
             const videosContainer = $('#videos-container');
             videosContainer.empty();
@@ -25,7 +28,14 @@ function loadRandomVideos() {
                 const videoElement = $(`
                     <div class="product__item">
                         <div class="product__item__pic" id="miniatura-${video.idVideo}"></div>
+                            <div class="ep">${video.descripcion}</div>
+                            <div class="comment"><i class="fa fa-comments"></i> 15</div>
+                            <div class="view"><i class="fa fa-eye"></i> 9141</div>
                         <div class="product__item__text">
+                            <ul>
+                                <li>Active</li>
+                                <li>Movie</li>
+                            </ul>
                             <h5><a href="#" class="video-title" data-id="${video.idVideo}">${video.titulo}</a></h5>
                         </div>
                     </div>
@@ -63,6 +73,9 @@ function loadImage(videoId) {
     $.ajax({
         url: '/videos/miniatura', // Asegúrate de que esta sea la ruta correcta
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: { id: videoId },
         xhr: function() {
             const xhr = new window.XMLHttpRequest();

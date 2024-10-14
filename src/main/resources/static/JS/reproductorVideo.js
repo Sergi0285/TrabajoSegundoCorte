@@ -49,6 +49,9 @@ function playVideo(identificador) {
     $.ajax({
         url: '/videos/ver',
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: { id: identificador },
         xhr: function() {
             const xhr = new window.XMLHttpRequest();
@@ -73,6 +76,9 @@ function loadComments(videoId) {
     $.ajax({
         url: `/comentarios/video/${videoId}`,
         type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         success: function(comentarios) {
             $('#comments-list').empty();
             comentarios.forEach(comentario => {
@@ -133,6 +139,10 @@ function editarComentario(comentarioId, nuevoComentario) {
     $.ajax({
         url: `/comentarios/editar/${comentarioId}`, // Cambia esta URL según tu API
         type: 'PUT', // Usar PUT para editar
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
         data: JSON.stringify({
             comentario: nuevoComentario,
             username: username
@@ -182,6 +192,10 @@ function eliminarComentario(comentarioId, videoId) {
     $.ajax({
         url: `/comentarios/delete/${comentarioId}`,
         type: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
         data: JSON.stringify({
             username: username
         }),
@@ -201,6 +215,10 @@ function agregarComentario(videoId, comentario) {
     $.ajax({
         url: "/comentarios/agregar",
         type: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
         data: JSON.stringify({
             comentario: comentario,
             videoId: videoId,
