@@ -31,3 +31,15 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignorar todo en miniaturas y videos
+recursos/miniaturas/*
+recursos/videos/*
+
+# No ignorar el archivo .gitkeep
+!recursos/miniaturas/.gitkeep
+!recursos/videos/.gitkeep
+
+# Si quieres asegurarte de que las carpetas en sí se mantengan
+!recursos/miniaturas/
+!recursos/videos/

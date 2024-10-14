@@ -1,0 +1,29 @@
+#videos-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px; /* Espaciado entre los elementos */
+}
+
+.product__item {
+    margin: 10px; /* Ajusta el valor según sea necesario */
+}
+
+
+.product__item__pic {
+    width: 300px; /* Ancho fijo */
+    height: 300px; /* Altura fija */
+    overflow: hidden; /* Oculta la parte que sobresale */
+}
+
+.product__item__pic img {
+    width: 100%; /* Hace que la imagen ocupe todo el ancho */
+    height: auto; /* Mantiene la relación de aspecto */
+}
+
+
+
+
+
+
+
+

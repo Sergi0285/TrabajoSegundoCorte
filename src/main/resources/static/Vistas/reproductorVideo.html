@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Anime Template">
+    <meta name="keywords" content="Anime, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Video</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="../recursosPlantilla/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../recursosPlantilla/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="../recursosPlantilla/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="../recursosPlantilla/css/plyr.css" type="text/css">
+    <link rel="stylesheet" href="../recursosPlantilla/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="../recursosPlantilla/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="../recursosPlantilla/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="../recursosPlantilla/css/style.css" type="text/css">
+    <link rel="stylesheet" href="../Css/reproductorVideo.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+     <!-- Header Section Begin -->
+     <header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="header__logo">
+                        <a href="./index.html">
+                            <img src="../recursosPlantilla/img/logo.png" alt="">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="header__nav">
+                        <nav class="header__menu mobile-menu">
+                            <ul>
+                                <li class="active"><a href="./index.html">Homepage</a></li>
+                                <li><a href="./categories.html">Categories <span class="arrow_carrot-down"></span></a>
+                                    <ul class="dropdown">
+                                        <li><a href="./categories.html">Categories</a></li>
+                                        <li><a href="./anime-details.html">Anime Details</a></li>
+                                        <li><a href="./anime-watching.html">Anime Watching</a></li>
+                                        <li><a href="./blog-details.html">Blog Details</a></li>
+                                        <li><a href="./signup.html">Sign Up</a></li>
+                                        <li><a href="./login.html">Login</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="./blog.html">Our Blog</a></li>
+                                <li><a href="#">Contacts</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="header__right">
+                        <a href="#" class="search-switch"><span class="icon_search"></span></a>
+                        <a href="./login.html"><span class="icon_profile"></span></a>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-menu-wrap"></div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Video Gallery</h1>
+
+        <!-- Contenedor de los videos listados -->
+        <div id="videos-container" class="videos-list">
+            <!-- Aquí se cargarán los videos -->
+        </div>
+
+        <!-- Sección de reproducción del video -->
+        <div id="video-player-container" class="video-player">
+            <h2 id="video-title">Selecciona un video para reproducir</h2>
+            <p id="video-description"></p>
+            <video id="video-player" controls>
+                <source id="video-source" src="" type="video/mp4">
+                Tu navegador no soporta la reproducción de este video.
+            </video>
+        </div>
+
+        <!-- Sección de comentarios -->
+        <div id="comments-container" class="comments-section">
+            <h2>Comentarios</h2>
+            <div id="comments-list">
+                <!-- Aquí se cargarán los comentarios -->
+            </div>
+            <div class="comment-form">
+                <textarea id="comment-input" placeholder="Escribe tu comentario aquí..."></textarea>
+                <button id="submit-comment" data-video-id="">Agregar Comentario</button>
+            </div>
+        </div>
+        <!-- Modal para editar comentario -->
+        <div id="editCommentModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="close-modal">&times;</span>
+                <h2>Editar Comentario</h2>
+                <textarea id="edit-comment-input" placeholder="Escribe tu nuevo comentario aquí..."></textarea>
+                <button id="save-edit-comment">Guardar Cambios</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../recursosPlantilla/Js/jquery-3.3.1.min.js"></script>
+    <script src="../recursosPlantilla/Js/bootstrap.min.js"></script>
+    <script src="../recursosPlantilla/Js/player.js"></script>
+    <script src="../recursosPlantilla/Js/jquery.nice-select.min.js"></script>
+    <script src="../recursosPlantilla/Js/mixitup.min.js"></script>
+    <script src="../recursosPlantilla/Js/jquery.slicknav.js"></script>
+    <script src="../recursosPlantilla/Js/owl.carousel.min.js"></script>
+    <script src="../recursosPlantilla/Js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
+    <script src="../JS/reproductorVideo.js"></script> <!-- Archivo JS para el listado de videos -->
+</body>
+</html>

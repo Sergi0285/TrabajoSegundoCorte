@@ -1,0 +1,99 @@
+h2 {
+    color: #ffffff;
+    font-family: "Oswald", sans-serif;
+}
+
+.upload-video {
+    padding: 50px 0;
+}
+
+.upload-video h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.section-title {
+    margin-right: 10px; /* Espacio entre el título y el selector */
+}
+
+.custom-file {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.custom-file-label {
+    overflow: hidden;       /* Oculta el contenido que desborda */
+    white-space: nowrap;    /* Evita que el texto se divida en múltiples líneas */
+    text-overflow: ellipsis; /* Muestra "..." si el texto es demasiado largo */
+}
+
+.custom-file-input {
+    cursor: pointer;
+}
+
+.custom-file-label {
+    cursor: pointer;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    padding: 10px;
+}
+
+#categoriesCheckboxes {
+    max-height: 150px; /* Limitar la altura de la lista */
+    overflow-y: auto; /* Agregar scroll si hay demasiados elementos */
+    background-color: #ffffff;
+}
+
+.checkbox-label {
+    width: auto;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px; /* Espaciado entre checkboxes */
+    background-color: #b7b7b7;
+}
+
+.checkbox-label input {
+    margin-right: 10px; /* Espacio entre el checkbox y el texto */
+}
+
+.section-title-propio h5 {
+	color: #ffffff;
+	font-weight: 600;
+	line-height: 21px;
+	text-transform: uppercase;
+	padding-left: 20px;
+	position: relative;
+	font-family: "Oswald", sans-serif;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.section-title-propio h5:after {
+	position: absolute;
+	left: 0;
+	top: -6px;
+	height: 32px;
+	width: 4px;
+	background: #e53637;
+	content: "";
+}
+
+.anime__details__btn__propio{
+	font-size: 13px;
+	color: #ffffff;
+	background: #e53637;
+	display: inline-block;
+	font-weight: 700;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	padding: 14px 20px;
+	border-radius: 4px;
+	margin-right: 11px;
+    cursor: pointer;
+}
