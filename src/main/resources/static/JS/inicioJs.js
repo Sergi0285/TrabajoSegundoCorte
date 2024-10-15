@@ -15,11 +15,6 @@ $(document).ready(function() {
     $("#loginBtn").click(function() {
         logUsuario();
     });
-
-    // Asociar la función regresar al botón de salir
-    $("#regresarBtn").click(function() {
-        confirmarRegreso();
-    });
 });
 
 function logUsuario() {

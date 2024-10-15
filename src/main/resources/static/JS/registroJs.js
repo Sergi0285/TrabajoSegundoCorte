@@ -4,7 +4,7 @@ let profileImage = "";
 // Función para alternar la visibilidad de la contraseña
 function togglePasswordVisibility() {
     const passwordField = document.getElementById('usuariocontrasena');
-    const eyeIcon = document.getElementById('eyeIcon');
+    const eyeIcon = document.getElementById('togglePassword').querySelector('i');
 
     // Alterna el tipo de input y el icono del ojo
     if (passwordField.type === 'password') {
@@ -27,26 +27,21 @@ function generatePassword() {
     let password = "";
 
     // Garantizar al menos un carácter de cada tipo
-    password += getRandomChar(lowercase);
-    password += getRandomChar(uppercase);
-    password += getRandomChar(numbers);
-    password += getRandomChar(specialChars);
+    password += lowercase.charAt(Math.floor(Math.random() * lowercase.length));
+    password += uppercase.charAt(Math.floor(Math.random() * uppercase.length));
+    password += numbers.charAt(Math.floor(Math.random() * numbers.length));
+    password += specialChars.charAt(Math.floor(Math.random() * specialChars.length));
 
     // Rellenar el resto de la contraseña con caracteres aleatorios
     const allChars = lowercase + uppercase + numbers + specialChars;
     for (let i = 4; i < length; i++) {
-        password += getRandomChar(allChars);
+        password += allChars.charAt(Math.floor(Math.random() * allChars.length));
     }
 
     // Mezclar los caracteres para que no siga siempre el mismo patrón
     password = password.split('').sort(() => 0.5 - Math.random()).join('');
 
     document.getElementById("usuariocontrasena").value = password;
-}
-
-// Función auxiliar para obtener un carácter aleatorio
-function getRandomChar(chars) {
-    return chars.charAt(Math.floor(Math.random() * chars.length));
 }
 
 // Función para cargar la imagen por defecto y convertirla a un archivo
@@ -155,7 +150,7 @@ function previewImage(event) {
 
 // Inicialización de eventos con jQuery
 $(document).ready(function() {
-    $('#togglePassword').click(togglePasswordVisibility);
+    document.getElementById('togglePassword').addEventListener('click', togglePasswordVisibility);
     $('#generatePasswordBtn').click(generatePassword);
     $('#profileImageInput').change(previewImage); // Evento para previsualizar la imagen
 
