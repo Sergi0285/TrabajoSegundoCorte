@@ -1,0 +1,132 @@
+
+
+/* Contenedor del formulario */
+.form-container {
+    max-width: 400px; /* Ancho máximo del formulario */
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+    padding: 20px; /* Espaciado interno */
+    margin: auto; /* Centrar en la pantalla */
+}
+
+/* Títulos */
+h2 {
+    text-align: center;
+    color: var(--primary-color); /* Color del título */
+}
+
+/* Estilos para contenedor de entrada */
+.input-container {
+    position: relative;
+    margin-bottom: 20px; /* Margen inferior */
+    width: 100%;
+}
+
+.input-container input {
+    width: 100%;
+    padding-left: 40px; /* Espacio para el icono a la izquierda */
+    height: 40px; /* Establece una altura uniforme para todos los campos */
+    border: 1px solid var(--border-color); /* Borde para todos los inputs */
+    border-radius: 5px; /* Bordes redondeados */
+    box-sizing: border-box; /* Asegura que el padding no afecte al ancho total */
+    transition: border-color 0.3s; /* Transición suave para el borde */
+}
+
+.input-container input:focus {
+    border-color: var(--primary-color); /* Cambia el color del borde al enfocar */
+}
+
+.input-icon {
+    position: absolute;
+    left: 10px; /* Alinea el icono a la izquierda */
+    top: 50%;
+    transform: translateY(-50%); /* Centra verticalmente el icono */
+    color: var(--icon-color); /* Color del icono */
+    font-size: 18px; /* Ajuste del tamaño del icono */
+}
+
+/* Estilo para el contenedor de contraseña */
+.password-container {
+    position: relative;
+    margin-bottom: 20px;
+    width: 100%; /* Asegura que el contenedor de la contraseña ocupe el 100% */
+    display: flex; /* Usa flexbox para centrar los elementos */
+    align-items: center; /* Alinea verticalmente los elementos */
+}
+
+.password-container input {
+    width: 100%;
+    padding: 0 60px 0 40px; /* Espacio para el icono y botones */
+    height: 40px; /* Asegura la misma altura que otros inputs */
+    border: 1px solid var(--border-color); /* Borde para el campo de contraseña */
+    border-radius: 5px; /* Bordes redondeados */
+    box-sizing: border-box; /* Asegura que el padding no afecte al ancho total */
+    transition: border-color 0.3s; /* Transición suave para el borde */
+}
+
+.password-container input:focus {
+    border-color: var(--primary-color); /* Cambia el color del borde al enfocar */
+}
+
+/* Estilos para los botones dentro del campo de contraseña */
+.password-container .eye-icon,
+.password-container .key-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); /* Centra verticalmente los botones */
+    background: none;
+    border: none; /* Elimina el borde del botón */
+    cursor: pointer;
+    padding: 0;
+    color: var(--icon-color);
+    font-size: 18px;
+    height: 40px; /* Igual a la altura del input */
+}
+
+/* Posicionamiento de los iconos del ojo y la llave */
+.password-container #togglePassword {
+    right: 60px; /* Ajuste para el botón de alternar contraseña */
+}
+
+.password-container #generatePasswordBtn {
+    right: 10px; /* Ajuste para el botón de generar contraseña */
+}
+
+/* Cambia el color al pasar el mouse sobre el botón */
+.password-container .eye-icon:hover,
+.password-container .key-icon:hover {
+    color: var(--icon-hover-color); /* Cambia el color al pasar el mouse sobre el icono */
+}
+
+.profile-picture-selection h4 {
+    color: #333; /* Cambia el título a un color más visible */
+}
+
+.default-images img {
+    width: 80px; /* Cambia el tamaño según tus preferencias */
+    height: auto; /* Mantiene la proporción de aspecto */
+    margin: 5px; /* Espaciado entre las imágenes */
+    border-radius: 50%; 
+    cursor: pointer; /* Cambia el cursor al pasar sobre la imagen */
+    border: 1px solid transparent; /* Borde transparente por defecto */
+    transition: border 0.3s; /* Transición para el borde */
+}
+
+.default-images img:hover {
+    border: 2px solid var(--primary-color); /* Cambia el borde al pasar el mouse */
+}
+
+#customImagePreview {
+    display: block;
+    width: 145px; /* Ajusta el ancho del preview a un tamaño más grande */
+    height: auto; /* Mantiene la proporción de la imagen */
+    border-radius: 100%; /* Hace que la imagen sea circular */
+    border: 2px solid #ffffff; /* Borde blanco */
+    object-fit: cover; /* Asegura que la imagen cubra el área de forma proporcionada */
+    margin: 10px auto; /* Centra la imagen de vista previa */
+}
+
+label {
+    color: white; /* Cambia el color del texto a blanco */
+}
