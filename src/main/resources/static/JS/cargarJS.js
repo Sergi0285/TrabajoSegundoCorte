@@ -83,6 +83,9 @@ function subirVideo() {
     $.ajax({
         url: '/videos/upload',
         type: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: formData,
         processData: false,
         contentType: false,
@@ -92,6 +95,9 @@ function subirVideo() {
             $.ajax({
                 url: '/categoria/add',
                 type: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
                 data: {
                     Id: videoId,
                     categorias: selectedCategories
@@ -114,6 +120,9 @@ function categorias() {
         $.ajax({
             url: '/videos/categorias', // Cambia la URL al endpoint adecuado
             type: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
             success: function(response) {
                 const categoriesContainer = $('#categoriesCheckboxes');
                 categoriesContainer.empty();

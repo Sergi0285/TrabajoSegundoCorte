@@ -45,7 +45,7 @@ function checkToken() {
     }
 }
 
-function loadRandomVideos() {
+/*function loadRandomVideos() {
     $.ajax({
         url: '/videos/randomVideos',
         type: 'GET',
@@ -60,6 +60,7 @@ function loadRandomVideos() {
 
             videos.forEach((video, index) => {
                 // Crea un elemento div para cada video
+                console.log(video.videoCategorias);
                 const videoElement = $(`
                     <div class="product__item">
                         <div class="product__item__pic" id="miniatura-${video.idVideo}"></div>
@@ -102,7 +103,90 @@ function loadRandomVideos() {
             console.error('Error al cargar los videos:', error);
         }
     });
+}*/
+
+function loadRandomVideos() {
+    $.ajax({
+        url: '/videos/randomVideos',
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        success: function(videos) {
+            const videosContainer = $('#videos-container');
+            videosContainer.empty();
+
+            let rowDiv = $('<div class="row"></div>');
+
+            videos.forEach((video, index) => {
+                // Crea un elemento div para cada video
+                const videoElement = $(`
+                    <div class="product__item">
+                        <div class="product__item__pic" id="miniatura-${video.idVideo}"></div>
+                        <div class="product__item__text">
+                            <ul id="categorias-${video.idVideo}"></ul> <!-- Aquí irán las categorías -->
+                            <h5><a href="#" class="video-title" data-id="${video.idVideo}">${video.titulo}</a></h5>
+                        </div>
+                            <div class="ep">${video.descripcion}</div>
+                            <div class="view"><i class="fa fa-date"></i> ${video.fechaSubida}</div>
+                        
+                    </div>
+                `);
+
+                rowDiv.append(videoElement);
+
+                // Llamada AJAX para cargar las categorías del video
+                loadCategorias(video.idVideo);
+
+                // Asignar evento click para guardar el ID del video
+                videoElement.find('.video-title').on('click', function(e) {
+                    e.preventDefault();
+                    const videoId = $(this).data('id');
+                    guardarIdVideo(videoId); // Guardar el ID del video
+                });
+
+                // Cargar la miniatura
+                loadImage(video.idVideo);
+
+                if ((index + 1) % 3 === 0) {
+                    videosContainer.append(rowDiv);
+                    rowDiv = $('<div class="row"></div>');
+                }
+            });
+
+            if (rowDiv.children().length > 0) {
+                videosContainer.append(rowDiv);
+            }
+        },
+        error: function(error) {
+            console.error('Error al cargar los videos:', error);
+        }
+    });
 }
+
+function loadCategorias(videoId) {
+    // Hacer la llamada AJAX para obtener las categorías de un video específico
+    $.ajax({
+        url: `/categoria/categorias/${videoId}`, // Ajuste en la URL para incluir el id del video
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        success: function(categorias) {
+            const ulElement = $(`#categorias-${videoId}`);
+            ulElement.empty();
+
+            // Añadir las categorías al <ul> correspondiente
+            categorias.forEach(videoCategoria => {
+                ulElement.append(`<li>${videoCategoria.categoria}</li>`); // Accediendo a la propiedad 'categoria'
+            });
+        },
+        error: function(error) {
+            console.error('Error al cargar las categorías:', error);
+        }
+    });
+}
+
 
 function loadImage(videoId) {
     $.ajax({
