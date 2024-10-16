@@ -1,5 +1,10 @@
 let token = localStorage.getItem('token');
 
+var tokenParts = token.split('.');
+var tokenPayload = JSON.parse(atob(tokenParts[1]));
+var username = tokenPayload.sub;
+
+
 window.onload = function() {
     verificarTokenYRedireccionarALogin();
     categorias();
@@ -47,11 +52,33 @@ function verificarTokenYRedireccionarALogin() {
     if (token === null) {
         window.location.href = '/Vistas/inicioVista.html';
     }
+    checkToken();
 }
 
-var tokenParts = token.split('.');
-var tokenPayload = JSON.parse(atob(tokenParts[1]));
-var username = tokenPayload.sub;
+function isTokenExpired(token) {
+    if (!token) return true; // Si no hay token, considera que ha expirado
+    const payload = JSON.parse(atob(token.split('.')[1])); // Decodifica el payload del JWT
+    const expiration = payload.exp * 1000; // Convierte a milisegundos
+    return Date.now() > expiration; // Compara la fecha de expiración con la fecha actual
+}
+
+// Función para cerrar sesión
+function logout() {
+    // Eliminar el token de localStorage
+    localStorage.removeItem('token');
+
+    // Redirigir al usuario a la página de inicio de sesión
+    window.location.href = "/Vistas/inicioVista.html";
+}
+
+// Función para comprobar el estado del token al cargar la página
+function checkToken() {
+    const token = localStorage.getItem('token');
+    if (isTokenExpired(token)) {
+        alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+        logout();
+    }
+}
 
 function subirVideo() {
     // Obtener valores del formulario
@@ -83,6 +110,9 @@ function subirVideo() {
     $.ajax({
         url: '/videos/upload',
         type: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: formData,
         processData: false,
         contentType: false,
@@ -92,6 +122,9 @@ function subirVideo() {
             $.ajax({
                 url: '/categoria/add',
                 type: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
                 data: {
                     Id: videoId,
                     categorias: selectedCategories
@@ -114,6 +147,9 @@ function categorias() {
         $.ajax({
             url: '/videos/categorias', // Cambia la URL al endpoint adecuado
             type: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token // Asegúrate de que 'token' esté definido
+            },
             success: function(response) {
                 const categoriesContainer = $('#categoriesCheckboxes');
                 categoriesContainer.empty();
