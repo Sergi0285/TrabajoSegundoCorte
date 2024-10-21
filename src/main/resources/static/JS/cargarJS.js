@@ -148,7 +148,7 @@ function categorias() {
             url: '/videos/categorias', // Cambia la URL al endpoint adecuado
             type: 'GET',
             headers: {
-                'Authorization': 'Bearer ' + token // Asegúrate de que 'token' esté definido
+                'Authorization': 'Bearer ' + token
             },
             success: function(response) {
                 const categoriesContainer = $('#categoriesCheckboxes');

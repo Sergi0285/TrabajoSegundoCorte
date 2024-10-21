@@ -1,5 +1,7 @@
 package Trabajo.Ingenieria.Servicios;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,5 +15,9 @@ public class videoCategoriaServicio {
 
     public videoCategoria save(videoCategoria v){
         return video.save(v);
+    }
+
+    public List<videoCategoria> obtenerCategoriasPorVideo(Long idVideo) {
+        return video.obtenerCategoriasPorVideo(idVideo);
     }
 }

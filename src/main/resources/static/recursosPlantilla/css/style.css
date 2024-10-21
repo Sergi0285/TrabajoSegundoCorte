@@ -139,9 +139,11 @@ ol {
 }
 
 .set-bg {
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: top center;
+    background-size: cover;
+    background-position: center;
+    height: 300px; /* Ajusta según lo que necesites */
+    aspect-ratio: 2/3; /* Esto asegura una proporción de imagen vertical */
+    border-radius: 10px;
 }
 
 .spad {
