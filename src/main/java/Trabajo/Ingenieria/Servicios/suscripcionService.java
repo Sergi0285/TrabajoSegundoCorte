@@ -39,7 +39,7 @@ public class suscripcionService {
             return false;
         }
         
-        Optional<suscripcion> suscripcionOpt = suscripcionRepo.findByUsuarioIdAndVideoId(
+        Optional<suscripcion> suscripcionOpt = suscripcionRepo.findByUsuarioIdAndVideoIdVideo(
             usuarioOpt.get().getId(), 
             canalId
         );
@@ -55,14 +55,14 @@ public class suscripcionService {
      * Verifica si existe una suscripción entre un usuario y un canal
      */
     public boolean existsSuscripcion(Long usuarioId, Long canalId) {
-        return suscripcionRepo.existsByUsuarioIdAndVideoId(usuarioId, canalId);
+        return suscripcionRepo.existsByUsuarioIdAndVideoIdVideo(usuarioId, canalId);
     }
 
     /**
      * Obtiene todas las suscripciones de un canal específico
      */
     public List<suscripcion> getSuscripcionesByCanal(Long canalId) {
-        return suscripcionRepo.findByVideoId(canalId);
+        return suscripcionRepo.findByVideoIdVideo(canalId);
     }
 
     /**
@@ -76,7 +76,7 @@ public class suscripcionService {
      * Obtiene el número total de suscriptores de un canal
      */
     public Long getNumeroSuscriptores(Long canalId) {
-        return suscripcionRepo.countByVideoId(canalId);
+        return suscripcionRepo.countByVideoIdVideo(canalId);
     }
 
     /**

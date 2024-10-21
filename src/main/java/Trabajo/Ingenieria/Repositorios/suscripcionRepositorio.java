@@ -11,15 +11,21 @@ import java.util.Optional;
 @Repository
 public interface suscripcionRepositorio extends JpaRepository<suscripcion, Long> {
     
-    List<suscripcion> findByVideoId(Long canalId);
+    // Cambiar VideoId por video_idVideo
+    List<suscripcion> findByVideoIdVideo(Long idVideo);
     
-    List<suscripcion> findByUsuarioId(Long usuarioId);
+    // Cambiar UsuarioId por usuario_id
+    List<suscripcion> findByUsuarioId(Long id);
     
-    Optional<suscripcion> findByUsuarioIdAndVideoId(Long usuarioId, Long canalId);
+    // Ajustar los nombres de los campos
+    Optional<suscripcion> findByUsuarioIdAndVideoIdVideo(Long id, Long idVideo);
     
-    boolean existsByUsuarioIdAndVideoId(Long usuarioId, Long canalId);
+    // Ajustar los nombres de los campos
+    boolean existsByUsuarioIdAndVideoIdVideo(Long id, Long idVideo);
     
-    Long countByVideoId(Long canalId);
+    // Cambiar VideoId por video_idVideo
+    Long countByVideoIdVideo(Long idVideo);
     
-    Long countByUsuarioId(Long usuarioId);
+    // Este está bien si usuario tiene un campo id
+    Long countByUsuarioId(Long id);
 }
