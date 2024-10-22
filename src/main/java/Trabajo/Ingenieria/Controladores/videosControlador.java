@@ -1,24 +1,29 @@
 package Trabajo.Ingenieria.Controladores;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.core.io.Resource;
-
-import Trabajo.Ingenieria.Servicios.clienteServicio;
-import Trabajo.Ingenieria.Servicios.videosServicio;
-import Trabajo.Ingenieria.Entidades.categoria;
-import Trabajo.Ingenieria.Entidades.usuario;
-import Trabajo.Ingenieria.Entidades.videos;
-
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.io.IOException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import Trabajo.Ingenieria.DTOs.NotificacionNuevoVideo;
+import Trabajo.Ingenieria.Entidades.categoria;
+import Trabajo.Ingenieria.Entidades.usuario;
+import Trabajo.Ingenieria.Entidades.videos;
+import Trabajo.Ingenieria.Servicios.NotificationService;
+import Trabajo.Ingenieria.Servicios.clienteServicio;
+import Trabajo.Ingenieria.Servicios.videosServicio;
 
 @RestController
 @RequestMapping("/videos")
@@ -29,14 +34,27 @@ public class videosControlador {
 
     @Autowired
     private clienteServicio cliente;
+    @Autowired
+    private NotificationService notificationService;
 
     @PostMapping("/upload")
     public ResponseEntity<Long> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam("image") MultipartFile imageFile,
                                             @RequestParam("alias") String alias, 
                                             @RequestParam("titulo") String titulo, @RequestParam("descripcion") String descripcion) throws IOException {
         usuario user = cliente.findByUsername(alias);
-        videos video = videoService.saveVideo(file, imageFile ,user, titulo, descripcion);
+        videos video = videoService.saveVideo(file, imageFile, user, titulo, descripcion);
+
         return ResponseEntity.ok(video.getIdVideo());
+    }
+
+    // Nuevo endpoint para manejar la notificación de nuevos videos
+    @PostMapping("/notificar")
+    public ResponseEntity<?> notificarNuevoVideo(@RequestBody NotificacionNuevoVideo notificacion) {
+        notificationService.enviarNotificacionNuevoVideo(
+                notificacion.getIdCanal(),
+                notificacion.getTituloVideo(),
+                notificacion.getEmailSuscriptores());
+        return ResponseEntity.ok("Notificación de nuevo video enviada");
     }
 
     @GetMapping("/Lista")
@@ -46,7 +64,7 @@ public class videosControlador {
     }
 
     @GetMapping("/obtenerInfo")
-    public ResponseEntity<videos> obtenerInfo(Long id){
+    public ResponseEntity<videos> obtenerInfo(Long id) {
         return ResponseEntity.ok(videoService.findById(id));
     }
 

@@ -64,4 +64,7 @@ public class usuario implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+    public String getEmail() {
+        return correo;
+    }
 }
