@@ -164,33 +164,6 @@ function editarComentario(comentarioId, nuevoComentario) {
     });
 }
 
-function abrirModalEdicion(comentarioId, textoComentario, videoId) {
-    const modalHTML = $(`
-        <div id="edit-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-modal">&times;</span>
-                <h2>Editar Comentario</h2>
-                <textarea id="edit-comment-input">${textoComentario}</textarea>
-                <button id="save-edit" data-id="${comentarioId}" data-video-id="${videoId}">Guardar Cambios</button>
-            </div>
-        </div>
-    `);
-
-    $('body').append(modalHTML);
-
-    modalHTML.find('.close-modal').on('click', function() {
-        modalHTML.remove();
-    });
-
-    modalHTML.find('#save-edit').on('click', function() {
-        const nuevoComentario = $('#edit-comment-input').val();
-        const comentarioId = $(this).data('id');
-        const videoId = $(this).data('video-id');
-        editarComentario(comentarioId, nuevoComentario, videoId);
-        modalHTML.remove();
-    });
-}
-
 function eliminarComentario(comentarioId, videoId) {
     $.ajax({
         url: `/comentarios/delete/${comentarioId}`,
@@ -237,7 +210,24 @@ function agregarComentario(videoId, comentario) {
     });
 }
 
-// Nuevas funciones para el manejo de suscripciones
+// Función para actualizar el contador de suscriptores
+function actualizarContadorSuscriptores(canalId) {
+    $.ajax({
+        url: `/suscripciones/contador/${canalId}`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        success: function(numeroSuscriptores) {
+            $('#subscribers-count').text(`${numeroSuscriptores} suscriptor${numeroSuscriptores === 1 ? '' : 'es'}`);
+        },
+        error: function(error) {
+            console.error('Error al obtener número de suscriptores:', error);
+        }
+    });
+}
+
+// Función para verificar suscripción y actualizar contador
 function verificarSuscripcion(canalId) {
     $.ajax({
         url: `/suscripciones/verificar?username=${username}&canalId=${canalId}`,
@@ -247,6 +237,7 @@ function verificarSuscripcion(canalId) {
         },
         success: function(estaSuscrito) {
             actualizarBotonSuscripcion(estaSuscrito);
+            actualizarContadorSuscriptores(canalId);
         },
         error: function(error) {
             console.error('Error al verificar suscripción:', error);
@@ -279,6 +270,7 @@ function suscribirse(canalId) {
         }),
         success: function(response) {
             actualizarBotonSuscripcion(true);
+            actualizarContadorSuscriptores(canalId);
             console.log('Suscripción exitosa:', response);
         },
         error: function(error) {
@@ -301,10 +293,29 @@ function cancelarSuscripcion(canalId) {
         }),
         success: function(response) {
             actualizarBotonSuscripcion(false);
+            actualizarContadorSuscriptores(canalId);
             console.log('Suscripción cancelada:', response);
         },
         error: function(error) {
             console.error('Error al cancelar suscripción:', error);
+        }
+    });
+}
+
+// Función para actualizar el estado general del canal
+function actualizarEstadoCanal(canalId) {
+    $.ajax({
+        url: `/suscripciones/estado-general/${canalId}`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        success: function(estado) {
+            // Aquí puedes actualizar más información del canal si lo deseas
+            actualizarContadorSuscriptores(canalId);
+        },
+        error: function(error) {
+            console.error('Error al obtener estado del canal:', error);
         }
     });
 }

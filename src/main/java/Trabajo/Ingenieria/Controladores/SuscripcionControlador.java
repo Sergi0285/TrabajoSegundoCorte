@@ -1,6 +1,7 @@
 package Trabajo.Ingenieria.Controladores;
 
 import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.time.LocalDateTime;
 
@@ -99,5 +100,49 @@ public class SuscripcionControlador {
         }
         boolean estaSuscrito = suscripcionServicio.existsSuscripcion(user.getId(), canalId);
         return ResponseEntity.ok(estaSuscrito);
+    }
+    @GetMapping("/contador/{canalId}")
+    public ResponseEntity<Long> obtenerNumeroSuscriptores(@PathVariable Long canalId) {
+        // Verificar si el canal existe
+        videos canal = videoServicio.findById(canalId);
+        if (canal == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        // Obtener el número de suscriptores
+        Long numeroSuscriptores = suscripcionServicio.getNumeroSuscriptores(canalId);
+        return ResponseEntity.ok(numeroSuscriptores);
+    }
+
+    @GetMapping("/total-suscripciones/{username}")
+    public ResponseEntity<Long> obtenerTotalSuscripciones(@PathVariable String username) {
+        // Buscar el usuario
+        usuario user = clienteServicio.findByUsername(username);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        // Obtener el número total de suscripciones del usuario
+        Long totalSuscripciones = suscripcionServicio.getNumeroSuscripciones(user.getId());
+        return ResponseEntity.ok(totalSuscripciones);
+    }
+    
+    @GetMapping("/estado-general/{canalId}")
+    public ResponseEntity<Map<String, Object>> obtenerEstadoGeneral(@PathVariable Long canalId) {
+        try {
+            videos canal = videoServicio.findById(canalId);
+            if (canal == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Map<String, Object> estado = new HashMap<>();
+            estado.put("numeroSuscriptores", suscripcionServicio.getNumeroSuscriptores(canalId));
+            estado.put("fechaCreacionCanal", canal.getFechaSubida());
+            // Puedes agregar más información relevante aquí
+
+            return ResponseEntity.ok(estado);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
