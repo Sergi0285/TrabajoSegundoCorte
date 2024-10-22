@@ -10,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-
 @Entity
 public class suscripcion {
     @Id
@@ -18,17 +17,17 @@ public class suscripcion {
     private Long idSuscripcion;
     private LocalDateTime fechaSuscripcion;
 
-    // Relación ManyToOne con usuario
+    // Cambiamos la relación para que sea con el usuario del canal en lugar del video
     @ManyToOne
     @JoinColumn(name = "Suscriptor_id")
-    private usuario usuario; 
+    private usuario suscriptor;
 
-    // Relación ManyToOne con videos
     @ManyToOne
     @JoinColumn(name = "Canal_id")
     @JsonIgnore
-    private videos video;
+    private usuario canal;  // Ahora nos suscribimos al usuario (canal) en lugar del video
 
+    // Getters y setters actualizados
     public Long getIdSuscripcion() {
         return idSuscripcion;
     }
@@ -45,21 +44,19 @@ public class suscripcion {
         this.fechaSuscripcion = fechaSuscripcion;
     }
 
-    public usuario getUsuario() {
-        return usuario;
+    public usuario getSuscriptor() {
+        return suscriptor;
     }
 
-    public void setUsuario(usuario usuario) {
-        this.usuario = usuario;
+    public void setSuscriptor(usuario suscriptor) {
+        this.suscriptor = suscriptor;
     }
 
-    public videos getVideo() {
-        return video;
+    public usuario getCanal() {
+        return canal;
     }
 
-    public void setVideo(videos video) {
-        this.video = video;
-    } 
-
-    
+    public void setCanal(usuario canal) {
+        this.canal = canal;
+    }
 }

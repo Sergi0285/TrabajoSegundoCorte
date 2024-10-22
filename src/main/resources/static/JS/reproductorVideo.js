@@ -369,3 +369,65 @@ function mostrarListaSuscriptores(suscriptores) {
     
     modal.show();
 }
+
+function mostrarDetallesCanal(canalId) {
+    $.ajax({
+        url: `/suscripciones/estado-general/${canalId}`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        success: function(detalles) {
+            // Actualizar el nombre del canal
+            $('#channel-name').text(detalles.nombreCanal);
+            
+            // Actualizar el contador de suscriptores
+            $('#subscribers-count').text(`${detalles.totalSuscriptores} suscriptor${detalles.totalSuscriptores === 1 ? '' : 'es'}`);
+            
+            // Configurar el evento click para mostrar la lista de suscriptores
+            $('#channel-name').off('click').on('click', function() {
+                mostrarListaSuscriptores(detalles.suscriptores);
+            });
+        },
+        error: function(error) {
+            console.error('Error al obtener detalles del canal:', error);
+        }
+    });
+}
+
+// Función actualizada para mostrar la lista de suscriptores
+function mostrarListaSuscriptores(suscriptores) {
+    const modal = $('#subscribersModal');
+    const lista = $('#subscribers-list');
+    lista.empty();
+    
+    suscriptores.forEach(sub => {
+        const fecha = new Date(sub.fechaSuscripcion).toLocaleDateString();
+        lista.append(`
+            <div class="subscriber-item">
+                <span class="subscriber-username">${sub.username}</span>
+                <span class="subscription-date">Suscrito desde: ${fecha}</span>
+            </div>
+        `);
+    });
+    
+    modal.show();
+}
+
+// Modificar la función verificarSuscripcion
+function verificarSuscripcion(canalId) {
+    $.ajax({
+        url: `/suscripciones/verificar?username=${username}&canalId=${canalId}`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        success: function(estaSuscrito) {
+            actualizarBotonSuscripcion(estaSuscrito);
+            mostrarDetallesCanal(canalId);
+        },
+        error: function(error) {
+            console.error('Error al verificar suscripción:', error);
+        }
+    });
+}
