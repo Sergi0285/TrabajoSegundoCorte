@@ -1,19 +1,28 @@
 package Trabajo.Ingenieria.Controladores;
 
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
-import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import Trabajo.Ingenieria.DTOs.NotificacionSuscripcion;
 import Trabajo.Ingenieria.Entidades.suscripcion;
 import Trabajo.Ingenieria.Entidades.usuario;
 import Trabajo.Ingenieria.Entidades.videos;
+import Trabajo.Ingenieria.Servicios.NotificationService;
 import Trabajo.Ingenieria.Servicios.clienteServicio;
 import Trabajo.Ingenieria.Servicios.suscripcionService;
 import Trabajo.Ingenieria.Servicios.videosServicio;
@@ -29,6 +38,9 @@ public class SuscripcionControlador {
 
     @Autowired
     private videosServicio videoServicio;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @PostMapping("/suscribirse")
     public ResponseEntity<String> crearSuscripcion(@RequestBody Map<String, String> request) {
@@ -171,4 +183,10 @@ public ResponseEntity<Map<String, Object>> obtenerDetallesCanal(@PathVariable Lo
 
     return ResponseEntity.ok(detalles);
 }
+ // Nuevo endpoint para manejar la notificación de suscripción
+    @PostMapping("/notificar")
+    public ResponseEntity<?> notificarSuscripcion(@RequestBody NotificacionSuscripcion notificacion) {
+        notificationService.enviarNotificacionSuscripcion(notificacion.getIdCanal(), notificacion.getEmailSuscriptor());
+        return ResponseEntity.ok("Notificación de suscripción enviada");
+    }
 }

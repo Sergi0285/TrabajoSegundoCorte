@@ -9,9 +9,11 @@ import org.springframework.core.io.Resource;
 
 import Trabajo.Ingenieria.Servicios.clienteServicio;
 import Trabajo.Ingenieria.Servicios.videosServicio;
+import Trabajo.Ingenieria.DTOs.NotificacionNuevoVideo;
 import Trabajo.Ingenieria.Entidades.categoria;
 import Trabajo.Ingenieria.Entidades.usuario;
 import Trabajo.Ingenieria.Entidades.videos;
+import Trabajo.Ingenieria.Servicios.NotificationService;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,6 +29,8 @@ public class videosControlador {
     private videosServicio videoService;
     @Autowired
     private clienteServicio cliente;
+    @Autowired
+    private NotificationService notificationService;
 
     @PostMapping("/upload")
     public ResponseEntity<Long> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam("image") MultipartFile imageFile,
@@ -36,7 +40,16 @@ public class videosControlador {
         videos video = videoService.saveVideo(file, imageFile ,user, titulo, descripcion);
         return ResponseEntity.ok(video.getIdVideo());
     }
-
+    // Nuevo endpoint para manejar la notificación de nuevos videos
+    @PostMapping("/notificar")
+    public ResponseEntity<?> notificarNuevoVideo(@RequestBody NotificacionNuevoVideo notificacion) {
+        notificationService.enviarNotificacionNuevoVideo(
+            notificacion.getIdCanal(), 
+            notificacion.getTituloVideo(), 
+            notificacion.getEmailSuscriptores()
+        );
+        return ResponseEntity.ok("Notificación de nuevo video enviada");
+    }
     @GetMapping("/Lista")
     public List<videos> getAllVideos() {
         List<videos> videoList = videoService.getAllVideos();
