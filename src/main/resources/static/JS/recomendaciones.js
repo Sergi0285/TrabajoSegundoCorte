@@ -82,12 +82,16 @@ function cargarRecomendacionesVideos(username) {
                 videoElement.find('.video-title').on('click', function(e) {
                     e.preventDefault();
                     const videoId = $(this).data('id');
-                    guardarIdVideoVisualizacion(videoId);  // Guardar ID del video
+                    guardarIdVideoVisualizacion(videoId, username);  // Guardar ID del video
+                    guardarIdVideo(videoId); // Guardar el ID del video
                 });
 
                 // Cargar la miniatura del video como fondo
                 loadImage(video.idVideo);
+                console.log("OUHFAUOUDAUOWD");
+                console.log("HP DANIEL LO DETESTO ", username);
                 console.log("Videos cargados:", $('#recomendacionesContainer').html());
+                
 
                 // Añadir nueva fila cada 5 videos
                 if ((index + 1) % 5 === 0) {

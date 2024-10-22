@@ -1,11 +1,8 @@
-
-
 /* Contenedor del formulario */
 .form-container {
     max-width: 400px; /* Ancho máximo del formulario */
     background-color: #fff; /* Fondo blanco */
     border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
     padding: 20px; /* Espaciado interno */
     margin: auto; /* Centrar en la pantalla */
 }
@@ -32,11 +29,6 @@ h2 {
     box-sizing: border-box; /* Asegura que el padding no afecte al ancho total */
     transition: border-color 0.3s; /* Transición suave para el borde */
 }
-
-.input-container input:focus {
-    border-color: var(--primary-color); /* Cambia el color del borde al enfocar */
-}
-
 .input-icon {
     position: absolute;
     left: 10px; /* Alinea el icono a la izquierda */
@@ -60,13 +52,7 @@ h2 {
     padding: 0 60px 0 40px; /* Espacio para el icono y botones */
     height: 40px; /* Asegura la misma altura que otros inputs */
     border: 1px solid var(--border-color); /* Borde para el campo de contraseña */
-    border-radius: 5px; /* Bordes redondeados */
-    box-sizing: border-box; /* Asegura que el padding no afecte al ancho total */
-    transition: border-color 0.3s; /* Transición suave para el borde */
-}
-
-.password-container input:focus {
-    border-color: var(--primary-color); /* Cambia el color del borde al enfocar */
+    
 }
 
 /* Estilos para los botones dentro del campo de contraseña */
@@ -74,8 +60,7 @@ h2 {
 .password-container .key-icon {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%); /* Centra verticalmente los botones */
-    background: none;
+    transform: translateY(-80%); /* Centra verticalmente los botones */
     border: none; /* Elimina el borde del botón */
     cursor: pointer;
     padding: 0;
@@ -93,15 +78,6 @@ h2 {
     right: 10px; /* Ajuste para el botón de generar contraseña */
 }
 
-/* Cambia el color al pasar el mouse sobre el botón */
-.password-container .eye-icon:hover,
-.password-container .key-icon:hover {
-    color: var(--icon-hover-color); /* Cambia el color al pasar el mouse sobre el icono */
-}
-
-.profile-picture-selection h4 {
-    color: #333; /* Cambia el título a un color más visible */
-}
 
 .default-images img {
     width: 80px; /* Cambia el tamaño según tus preferencias */
@@ -126,7 +102,60 @@ h2 {
     object-fit: cover; /* Asegura que la imagen cubra el área de forma proporcionada */
     margin: 10px auto; /* Centra la imagen de vista previa */
 }
+/* Contenedor para el input de archivo */
+.input-file-wrapper {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 10px;
+}
 
+/* Vista previa de la imagen seleccionada */
+.image-preview {
+    display: none;
+    width: 100px; /* Tamaño de la vista previa */
+    height: 100px;
+    object-fit: cover; /* Ajusta la imagen para que mantenga proporciones sin distorsionarse */
+    border-radius: 50%; /* Bordes redondeados para que parezca una foto de perfil */
+    margin-top: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: transform 0.3s ease-in-out; /* Efecto de zoom en hover */
+}
+
+/* Efecto de zoom cuando el usuario pasa el mouse sobre la vista previa */
+.image-preview:hover {
+    transform: scale(1.1);
+}
+
+/* Estilo para el selector de imágenes por defecto */
+#defaultImageSelect {
+    max-width: 300px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo general para las etiquetas */
 label {
-    color: white; /* Cambia el color del texto a blanco */
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #fbfbfb;
+}
+
+/* Ajustes generales para el input de archivo */
+input[type="file"] {
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="file"]:hover {
+    background-color: #eee;
 }

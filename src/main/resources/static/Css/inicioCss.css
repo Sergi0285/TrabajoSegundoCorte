@@ -1,0 +1,38 @@
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 40px; /* Espacio para el botón del ojo */
+}
+
+.password-container button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+/* Estilo para el h5 */
+h5 {
+    color: #f8f1f1;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 20px;
+}
+
+/* Estilo para el enlace dentro del h5 */
+h5 a {
+    color: #e53637;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+h5 a:hover {
+    text-decoration: underline;
+}
