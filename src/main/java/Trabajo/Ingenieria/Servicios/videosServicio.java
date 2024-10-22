@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
+
+import Trabajo.Ingenieria.Entidades.categoria;
 import Trabajo.Ingenieria.Entidades.usuario;
 import Trabajo.Ingenieria.Entidades.videos;
 import Trabajo.Ingenieria.Repositorios.videosRepositorio;
@@ -34,6 +36,32 @@ public class videosServicio {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    public List<videos> getRecomendaciones(String username) {
+        // Obtener las categorías de los videos que ha visto el usuario
+        List<Object[]> categoriasFrecuentes = videoRepository.findMostViewedCategoriesByUser(username);
+    
+        if (categoriasFrecuentes.isEmpty()) {
+            // Si no hay videos vistos, retornar algunos videos aleatorios
+            System.out.println("No se encontraron categorías frecuentes para el usuario: " + username);
+            return videoRepository.findUnwatchedVideosByCategory(username, categoria.Chisme).subList(0, 5);
+        }
+    
+        // Obtener la categoría más vista
+        categoria categoriaFavorita = (categoria) categoriasFrecuentes.get(0)[0];
+        System.out.println("Categoría favorita: " + categoriaFavorita);
+    
+        // Encontrar videos no vistos por el usuario en esa categoría
+        List<videos> recomendaciones = videoRepository.findUnwatchedVideosByCategory(username, categoriaFavorita);
+    
+        // Si no se encontraron videos recomendados, registrar ese detalle
+        if (recomendaciones.isEmpty()) {
+            System.out.println("No se encontraron videos recomendados para el usuario en la categoría: " + categoriaFavorita);
+        }
+    
+        // Retornar hasta 5 recomendaciones
+        return recomendaciones.size() > 5 ? recomendaciones.subList(0, 5) : recomendaciones;
+    }
 
     public videos saveVideo(MultipartFile file, MultipartFile imageFile , usuario user, String titulo, String descripcion) throws IOException {
         videos video = new videos();

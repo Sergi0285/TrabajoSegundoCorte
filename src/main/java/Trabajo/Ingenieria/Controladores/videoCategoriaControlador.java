@@ -56,4 +56,5 @@ public class videoCategoriaControlador {
         return videoCategoriaServicio.obtenerCategoriasPorVideo(idVideo);
     }
 
+
 }

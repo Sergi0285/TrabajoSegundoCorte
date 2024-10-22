@@ -2,6 +2,7 @@ package Trabajo.Ingenieria.Controladores;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,14 +25,15 @@ import java.io.IOException;
 public class videosControlador {
 
     @Autowired
-    private videosServicio videoService;
+    private videosServicio videoService; // Nota: "videoService" es el nombre correcto
+
     @Autowired
     private clienteServicio cliente;
 
     @PostMapping("/upload")
     public ResponseEntity<Long> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam("image") MultipartFile imageFile,
-    @RequestParam("alias") String alias, 
-    @RequestParam("titulo") String titulo, @RequestParam("descripcion") String descripcion) throws IOException {
+                                            @RequestParam("alias") String alias, 
+                                            @RequestParam("titulo") String titulo, @RequestParam("descripcion") String descripcion) throws IOException {
         usuario user = cliente.findByUsername(alias);
         videos video = videoService.saveVideo(file, imageFile ,user, titulo, descripcion);
         return ResponseEntity.ok(video.getIdVideo());
@@ -72,5 +74,12 @@ public class videosControlador {
 
         // Retornar solo 6 videos al azar
         return todosLosVideos.stream().limit(6).collect(Collectors.toList());
+    }
+
+    @GetMapping("/recomendaciones")
+    public ResponseEntity<List<videos>> getRecomendaciones(@RequestParam String username) {
+        // Aquí debes usar videoService, no videosServicio
+        List<videos> recomendaciones = videoService.getRecomendaciones(username);
+        return new ResponseEntity<>(recomendaciones, HttpStatus.OK);
     }
 }

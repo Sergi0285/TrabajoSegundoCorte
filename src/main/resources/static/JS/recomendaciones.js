@@ -9,7 +9,7 @@ console.log(username);
 
 $(document).ready(function() {
     verificarTokenYRedireccionarALogin();
-    loadRandomVideos();
+    cargarRecomendacionesVideos(username);
 });
 
 function verificarTokenYRedireccionarALogin() {
@@ -59,7 +59,6 @@ function cargarRecomendacionesVideos(username) {
             let rowDiv = $('<div class="row"></div>');
 
             videos.forEach((video, index) => {
-                // Crea un elemento div para cada video con el nuevo estilo
                 const videoElement = $(`
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="product__item">
@@ -106,73 +105,6 @@ function cargarRecomendacionesVideos(username) {
             console.error('Error al cargar los videos:', error);
             const videosContainer = $('#recomendacionesContainer');
             videosContainer.empty().append('<p>Error al cargar las recomendaciones.</p>');
-        }
-    });
-}
-
-function loadRandomVideos(callback) {
-    $.ajax({
-        url: '/videos/randomVideos',
-        type: 'GET',
-        headers: {
-            'Authorization': 'Bearer ' + token
-        },
-        success: function(videos) {
-            const videosContainer = $('#videos-container');
-            videosContainer.empty();
-
-            let rowDiv = $('<div class="row"></div>');
-
-            videos.forEach((video, index) => {
-                const videoElement = $(`
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div class="product__item__pic set-bg" id="miniatura-${video.idVideo}" data-setbg=""></div>
-                            <div class="product__item__text">
-                                <ul id="categorias-${video.idVideo}"></ul>
-                                <h5><a href="#" class="video-title" data-id="${video.idVideo}">${video.titulo}</a></h5>
-                            </div>
-                            <div class="ep">${video.descripcion}</div>
-                            <div class="view"><i class="fa fa-date"></i> ${video.fechaSubida}</div>
-                        </div>
-                    </div>
-                `);
-
-                rowDiv.append(videoElement);
-
-                // Cargar las categorías
-                loadCategorias(video.idVideo);
-
-                // Evento click para el título del video
-                videoElement.find('.video-title').on('click', function(e) {
-                    e.preventDefault();
-                    const videoId = $(this).data('id');
-                    guardarIdVideoVisualizacion(videoId);
-                });
-
-                // Cargar la miniatura del video
-                loadImage(video.idVideo);
-
-                // Añadir nueva fila cada 5 videos
-                if ((index + 1) % 5 === 0) {
-                    videosContainer.append(rowDiv);
-                    rowDiv = $('<div class="row"></div>');
-                }
-            });
-
-            // Añadir la última fila si tiene videos
-            if (rowDiv.children().length > 0) {
-                videosContainer.append(rowDiv);
-            }
-            console.log("Videos cargados:", $('#videos-container').html());
-
-            // Llama al callback si está definido
-            if (typeof callback === 'function') {
-                callback();
-            }
-        },
-        error: function(error) {
-            console.error('Error al cargar los videos:', error);
         }
     });
 }
