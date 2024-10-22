@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import Trabajo.Ingenieria.DTOs.NotificacionNuevoVideo;
 import Trabajo.Ingenieria.DTOs.NotificacionSuscripcion;
 import Trabajo.Ingenieria.Entidades.suscripcion;
 import Trabajo.Ingenieria.Entidades.usuario;
@@ -26,6 +27,8 @@ import Trabajo.Ingenieria.Servicios.NotificationService;
 import Trabajo.Ingenieria.Servicios.clienteServicio;
 import Trabajo.Ingenieria.Servicios.suscripcionService;
 import Trabajo.Ingenieria.Servicios.videosServicio;
+
+
 
 @RestController
 @RequestMapping("/suscripciones")
@@ -41,6 +44,7 @@ public class SuscripcionControlador {
 
     @Autowired
     private NotificationService notificationService;
+    
 
     @PostMapping("/suscribirse")
     public ResponseEntity<String> crearSuscripcion(@RequestBody Map<String, String> request) {
@@ -72,6 +76,7 @@ public class SuscripcionControlador {
 
         // Guardar la suscripción
         suscripcionServicio.addSuscripcion(nuevaSuscripcion);
+        notificationService.enviarNotificacionSuscripcion(canalId, suscriptor.getEmail());
 
         return new ResponseEntity<>("Suscripción realizada exitosamente", HttpStatus.CREATED);
     }
@@ -188,5 +193,16 @@ public ResponseEntity<Map<String, Object>> obtenerDetallesCanal(@PathVariable Lo
     public ResponseEntity<?> notificarSuscripcion(@RequestBody NotificacionSuscripcion notificacion) {
         notificationService.enviarNotificacionSuscripcion(notificacion.getIdCanal(), notificacion.getEmailSuscriptor());
         return ResponseEntity.ok("Notificación de suscripción enviada");
+    }
+
+    @PostMapping("/notificarNuevoVideo")
+    public ResponseEntity<String> notificarNuevoVideo(@RequestBody NotificacionNuevoVideo notificacion) {
+        try {
+            // Llamada no estática al método del servicio
+            suscripcionServicio.enviarNotificacionesNuevoVideo(notificacion);
+            return ResponseEntity.ok("Notificación enviada a los suscriptores");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al enviar notificación: " + e.getMessage());
+        }
     }
 }

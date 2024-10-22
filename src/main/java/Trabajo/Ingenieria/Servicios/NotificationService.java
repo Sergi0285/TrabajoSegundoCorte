@@ -21,4 +21,5 @@ public class NotificationService {
         NotificacionNuevoVideo notificacion = new NotificacionNuevoVideo(idCanal, tituloVideo, emailSuscriptores);
         rabbitTemplate.convertAndSend("nuevoVideo.cola", notificacion);
     }
+    
 }
