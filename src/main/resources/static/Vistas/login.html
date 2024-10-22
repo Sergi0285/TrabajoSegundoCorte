@@ -15,21 +15,21 @@
     rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" href="../recursosPlantilla/css/index.css" type="text/css">
-    <link rel="stylesheet" href="../recursosPlantilla/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="../recursosPlantilla/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="../recursosPlantilla/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="../recursosPlantilla/css/plyr.css" type="text/css">
-    <link rel="stylesheet" href="../recursosPlantilla/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="../recursosPlantilla/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="../recursosPlantilla/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="../recursosPlantilla/css/style.css" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/plyr.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
 </head>
 
 <body>
     <!-- Page Preloder -->
-
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
 
     <!-- Header Section Begin -->
     <header class="header">
@@ -95,23 +95,42 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <div>
-                        <input id="usuarioalias" class="form-control" placeholder="Alias">
-                        <br>
-                        <div class="password-container">
-                            <input id="usuariocontrasena" type="password" class="form-control" placeholder="Contraseña">
-                            <button type="button" id="togglePassword">
-                                <i class="fas fa-eye" id="eyeIcon"></i>
-                            </button>
-                        </div>
-                        <button class="btn btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
-                        <button class="btn btn-secondary" onclick="regresar()">Salir</button>
+                    <div class="login__form">
+                        <h3>Login</h3>
+                        <form action="#">
+                            <div class="input__item">
+                                <input type="text" placeholder="Email address">
+                                <span class="icon_mail"></span>
+                            </div>
+                            <div class="input__item">
+                                <input type="text" placeholder="Password">
+                                <span class="icon_lock"></span>
+                            </div>
+                            <button type="submit" class="site-btn">Login Now</button>
+                        </form>
+                        <a href="#" class="forget_pass">Forgot Your Password?</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="login__register">
-                        <h3>¿Todavia No tienes cuenta?</h3>
-                        <a href="../Vistas/registroVista.html" class="primary-btn">Registrate ahora</a>
+                        <h3>Dont’t Have An Account?</h3>
+                        <a href="#" class="primary-btn">Register Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="login__social">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="login__social__links">
+                            <span>or</span>
+                            <ul>
+                                <li><a href="#" class="facebook"><i class="fa fa-facebook"></i> Sign in With
+                                Facebook</a></li>
+                                <li><a href="#" class="google"><i class="fa fa-google"></i> Sign in With Google</a></li>
+                                <li><a href="#" class="twitter"><i class="fa fa-twitter"></i> Sign in With Twitter</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -164,14 +183,14 @@
     <!-- Search model end -->
 
     <!-- Js Plugins -->
-    <script src="../recursosPlantilla/js/jquery-3.3.1.min.js"></script>
-    <script src="../recursosPlantilla/js/bootstrap.min.js"></script>
-    <script src="../recursosPlantilla/js/jquery.nice-select.min.js"></script>
-    <script src="../recursosPlantilla/js/jquery.magnific-popup.min.js"></script>
-    <script src="../recursosPlantilla/js/plyr.js"></script>
-    <script src="../recursosPlantilla/js/owl.carousel.min.js"></script>
-    <script src="../recursosPlantilla/js/main.js"></script>
-    <script type="text/JavaScript" src="../JS/inicioJs.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
 
 
 </body>

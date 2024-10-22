@@ -102,7 +102,7 @@ function saveUsuario() {
             success: function(response) {
                 localStorage.setItem('token', response.token);
                 alert('Usuario registrado correctamente.');
-                window.location.href = "../index.html";
+                window.location.href = "/Vistas/inicioVista.html";
             },
             error: function(xhr) {
                 let errorMessage = 'Ocurrió un error inesperado. Inténtelo de nuevo.';

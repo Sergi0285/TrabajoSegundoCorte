@@ -8,7 +8,7 @@ console.log(token);
 console.log(username);
 
 $(document).ready(function() {
-    verificarTokenYRedireccionarALogin()
+    verificarTokenYRedireccionarALogin();
     loadRandomVideos();
 });
 
@@ -45,7 +45,72 @@ function checkToken() {
     }
 }
 
-function loadRandomVideos() {
+function cargarRecomendacionesVideos(username) {
+    $.ajax({
+        url: `/videos/recomendaciones?username=${username}`, // Incluye el nombre de usuario en la URL
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        success: function(videos) {
+            const videosContainer = $('#recomendacionesContainer');
+            videosContainer.empty();
+
+            let rowDiv = $('<div class="row"></div>');
+
+            videos.forEach((video, index) => {
+                // Crea un elemento div para cada video con el nuevo estilo
+                const videoElement = $(`
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" id="miniatura-${video.idVideo}" data-setbg=""></div>
+                            <div class="product__item__text">
+                                <ul id="categorias-${video.idVideo}"></ul>
+                                <h5><a href="#" class="video-title" data-id="${video.idVideo}">${video.titulo}</a></h5>
+                            </div>
+                            <div class="ep">${video.descripcion}</div>
+                            <div class="view"><i class="fa fa-date"></i> ${video.fechaSubida}</div>
+                        </div>
+                    </div>
+                `);
+
+                rowDiv.append(videoElement);
+
+                // Cargar las categorías del video
+                loadCategorias(video.idVideo);
+
+                // Asignar evento click para guardar el ID del video
+                videoElement.find('.video-title').on('click', function(e) {
+                    e.preventDefault();
+                    const videoId = $(this).data('id');
+                    guardarIdVideoVisualizacion(videoId);  // Guardar ID del video
+                });
+
+                // Cargar la miniatura del video como fondo
+                loadImage(video.idVideo);
+                console.log("Videos cargados:", $('#recomendacionesContainer').html());
+
+                // Añadir nueva fila cada 5 videos
+                if ((index + 1) % 5 === 0) {
+                    videosContainer.append(rowDiv);  // Añadir la fila después de 5 videos
+                    rowDiv = $('<div class="row"></div>');  // Crear una nueva fila
+                }
+            });
+
+            // Añadir la última fila si tiene videos
+            if (rowDiv.children().length > 0) {
+                videosContainer.append(rowDiv);  // Añadir cualquier fila restante
+            }
+        },
+        error: function(error) {
+            console.error('Error al cargar los videos:', error);
+            const videosContainer = $('#recomendacionesContainer');
+            videosContainer.empty().append('<p>Error al cargar las recomendaciones.</p>');
+        }
+    });
+}
+
+function loadRandomVideos(callback) {
     $.ajax({
         url: '/videos/randomVideos',
         type: 'GET',
@@ -59,44 +124,51 @@ function loadRandomVideos() {
             let rowDiv = $('<div class="row"></div>');
 
             videos.forEach((video, index) => {
-                // Crea un elemento div para cada video
                 const videoElement = $(`
-                    <div class="product__item">
-                        <div class="product__item__pic" id="miniatura-${video.idVideo}"></div>
-                        <div class="product__item__text">
-                            <ul id="categorias-${video.idVideo}"></ul> <!-- Aquí irán las categorías -->
-                            <h5><a href="#" class="video-title" data-id="${video.idVideo}">${video.titulo}</a></h5>
-                        </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" id="miniatura-${video.idVideo}" data-setbg=""></div>
+                            <div class="product__item__text">
+                                <ul id="categorias-${video.idVideo}"></ul>
+                                <h5><a href="#" class="video-title" data-id="${video.idVideo}">${video.titulo}</a></h5>
+                            </div>
                             <div class="ep">${video.descripcion}</div>
                             <div class="view"><i class="fa fa-date"></i> ${video.fechaSubida}</div>
-                        
+                        </div>
                     </div>
                 `);
 
                 rowDiv.append(videoElement);
 
-                // Llamada AJAX para cargar las categorías del video
+                // Cargar las categorías
                 loadCategorias(video.idVideo);
 
-                // Asignar evento click para guardar el ID del video
+                // Evento click para el título del video
                 videoElement.find('.video-title').on('click', function(e) {
                     e.preventDefault();
                     const videoId = $(this).data('id');
-                    guardarIdVideoVisualizacion(videoId, username); 
-                    guardarIdVideo(videoId); // Guardar el ID del video
+                    guardarIdVideoVisualizacion(videoId);
                 });
 
-                // Cargar la miniatura
+                // Cargar la miniatura del video
                 loadImage(video.idVideo);
 
-                if ((index + 1) % 3 === 0) {
+                // Añadir nueva fila cada 5 videos
+                if ((index + 1) % 5 === 0) {
                     videosContainer.append(rowDiv);
                     rowDiv = $('<div class="row"></div>');
                 }
             });
 
+            // Añadir la última fila si tiene videos
             if (rowDiv.children().length > 0) {
                 videosContainer.append(rowDiv);
+            }
+            console.log("Videos cargados:", $('#videos-container').html());
+
+            // Llama al callback si está definido
+            if (typeof callback === 'function') {
+                callback();
             }
         },
         error: function(error) {
@@ -106,7 +178,6 @@ function loadRandomVideos() {
 }
 
 function loadCategorias(videoId) {
-    // Hacer la llamada AJAX para obtener las categorías de un video específico
     $.ajax({
         url: `/categoria/categorias/${videoId}`, // Ajuste en la URL para incluir el id del video
         type: 'GET',
@@ -119,7 +190,7 @@ function loadCategorias(videoId) {
 
             // Añadir las categorías al <ul> correspondiente
             categorias.forEach(videoCategoria => {
-                ulElement.append(`<li>${videoCategoria.categoria}</li>`); // Accediendo a la propiedad 'categoria'
+                ulElement.append(`<li>${videoCategoria.categoria}</li>`);
             });
         },
         error: function(error) {
@@ -128,10 +199,9 @@ function loadCategorias(videoId) {
     });
 }
 
-
 function loadImage(videoId) {
     $.ajax({
-        url: '/videos/miniatura', // Asegúrate de que esta sea la ruta correcta
+        url: '/videos/miniatura', // Ruta correcta
         type: 'GET',
         headers: {
             'Authorization': 'Bearer ' + token
@@ -144,9 +214,8 @@ function loadImage(videoId) {
         },
         success: function(imageBlob) {
             const imageObjectURL = URL.createObjectURL(imageBlob);
-            // Crear un elemento <img> y añadirlo al contenedor
-            const imgElement = $(`<img src="${imageObjectURL}" alt="Miniatura de video ${videoId}" style="width: 100%; height: auto;">`);
-            $(`#miniatura-${videoId}`).append(imgElement); // Añadir la imagen al div
+            const videoElement = $(`#miniatura-${videoId}`);
+            videoElement.css('background-image', `url(${imageObjectURL})`);
         },
         error: function(error) {
             console.error('Error al cargar la miniatura:', error);
@@ -174,6 +243,7 @@ function guardarIdVideoVisualizacion(videoId, username) {
         }
     });
 }
+
 
 function guardarIdVideo(id) {
     localStorage.setItem('id_video', id);
