@@ -7,7 +7,7 @@
     <meta name="keywords" content="Anime, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Anime | Template</title>
+    <title>Editar usuario</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -28,8 +28,48 @@
 
 <body>
 
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Navegación -->
+                <div class="col-lg-9 col-md-9 col-12">
+                    <div class="header__nav">
+                        <nav class="navbar navbar-expand-lg navbar-dark">
+                            <a class="navbar-brand" href="../index.html">Pagina Principal</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                <ul class="navbar-nav ml-auto">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/Vistas/recomendacionesVista.html">Recomendaciones</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/Vistas/cargarVista.html">Cargar videos</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button class="btn btn-danger nav-link" onclick="logout()">Log out</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Perfil de usuario -->
+                <div class="col-lg-3 col-md-3 col-12 text-right">
+                    <a href="/Vistas/userEdit.html" class="btn btn-outline-light">
+                        <span class="icon_profile"></span> Perfil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
     <!-- Normal Breadcrumb Begin -->
-    <section class="normal-breadcrumb set-bg" data-setbg="img/normal-breadcrumb.jpg">
+    <section class="normal-breadcrumb set-bg py-3" data-setbg="img/normal-breadcrumb.jpg">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -46,7 +86,8 @@
     <section class="signup spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6">
+                <!-- Formulario de edición -->
+                <div class="col-lg-6 col-md-12">
                     <div class="login__form">
                         <form id="registrationForm">
                             <!-- Grupo para el nombre -->
@@ -67,35 +108,39 @@
                                 <input id="usuariocel" class="form-control" placeholder="Celular" required aria-label="Número de celular">
                             </div>
 
+                            <!-- Botón para guardar cambios -->
                             <div class="form-group">
-                                <button type="button" class="btn btn-primary" id="updateButton">Guardar Cambios</button>
+                                <button type="button" class="btn btn-primary btn-block" id="updateButton">Guardar Cambios</button>
                             </div>
                         </form>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <!-- Espacio para mostrar la imagen de perfil actual -->
+
+                <!-- Sección de imagen de perfil -->
+                <div class="col-lg-6 col-md-12">
+                    <!-- Imagen de perfil actual -->
                     <div class="form-group">
                         <label>Imagen de perfil actual:</label>
-                        <img id="currentProfileImage" src="" alt="Imagen de perfil actual" style="max-width: 100px; margin-top: 10px;" />
+                        <img id="currentProfileImage" src="" alt="Imagen de perfil actual" class="img-fluid" style="max-width: 100px; margin-top: 10px;" />
                     </div>
+
+                    <!-- Cargar nueva imagen -->
                     <div class="form-group">
                         <label for="profileImageInput">Selecciona una imagen de perfil:</label>
-                        <input type="file" id="profileImageInput" accept="image/*" />
-                        <img id="customImagePreview" src="" alt="Vista previa de la imagen" style="display: none; max-width: 100px; margin-top: 10px;" />
+                        <input type="file" id="profileImageInput" accept="image/*" class="form-control-file" />
+                        <img id="customImagePreview" src="" alt="Vista previa de la imagen" class="img-fluid" style="display: none; max-width: 100px; margin-top: 10px;" />
                     </div>
-                    
+
+                    <!-- Seleccionar imagen por defecto -->
                     <div class="form-group">
                         <label for="defaultImageSelect">O elige una imagen por defecto:</label>
-                        <select id="defaultImageSelect">
+                        <select id="defaultImageSelect" class="form-control">
                             <option value="">-- Seleccionar imagen por defecto --</option>
                             <option value="../Imagenes/perfil1.png">Imagen 1</option>
                             <option value="../Imagenes/perfil2.png">Imagen 2</option>
                             <option value="../Imagenes/perfil3.png">Imagen 3</option>
-                            <!-- Agrega más opciones según sea necesario -->
                         </select>
                     </div>
-                    
                 </div>
             </div>
         </div>
@@ -103,7 +148,7 @@
     <!-- Signup Section End -->
 
     <!-- Footer Section Begin -->
-    <footer class="footer">
+    <footer class="footer py-4">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-6">
@@ -112,7 +157,7 @@
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6">
+                <div class="col-lg-6 col-md-6 text-right">
                     <div class="footer__social">
                         <h6>Síguenos</h6>
                         <div class="footer__social__links">
@@ -140,5 +185,3 @@
 </body>
 
 </html>
-
-
