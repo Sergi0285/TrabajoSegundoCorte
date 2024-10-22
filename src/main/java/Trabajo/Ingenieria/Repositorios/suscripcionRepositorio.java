@@ -28,5 +28,4 @@ public interface suscripcionRepositorio extends JpaRepository<suscripcion, Long>
     
     // Este está bien si usuario tiene un campo id
     Long countByUsuarioId(Long id);
-
 }
