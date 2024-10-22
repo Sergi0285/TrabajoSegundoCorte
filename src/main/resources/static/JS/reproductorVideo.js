@@ -48,6 +48,18 @@ $(document).ready(function() {
             suscribirse(canalId);
         }
     });
+
+    // Cerrar el modal de suscriptores
+    $('#close-subscribers-modal').on('click', function() {
+        $('#subscribersModal').hide();
+    });
+
+    // Cerrar el modal si se hace clic fuera de él
+    $(window).on('click', function(event) {
+        if ($(event.target).is('#subscribersModal')) {
+            $('#subscribersModal').hide();
+        }
+    });
 });
 
 function verificarTokenYRedireccionarALogin() {
@@ -76,7 +88,7 @@ function playVideo(identificador) {
             $('#video-player')[0].play();
             $('#submit-comment').data('video-id', identificador);
             loadComments(identificador);
-            verificarSuscripcion(identificador); // Verificar estado de suscripción
+            verificarSuscripcion(identificador);
         },
         error: function(error) {
             console.error('Error al cargar el video:', error);
@@ -210,7 +222,6 @@ function agregarComentario(videoId, comentario) {
     });
 }
 
-// Función para actualizar el contador de suscriptores
 function actualizarContadorSuscriptores(canalId) {
     $.ajax({
         url: `/suscripciones/contador/${canalId}`,
@@ -227,7 +238,6 @@ function actualizarContadorSuscriptores(canalId) {
     });
 }
 
-// Función para verificar suscripción y actualizar contador
 function verificarSuscripcion(canalId) {
     $.ajax({
         url: `/suscripciones/verificar?username=${username}&canalId=${canalId}`,
@@ -238,6 +248,7 @@ function verificarSuscripcion(canalId) {
         success: function(estaSuscrito) {
             actualizarBotonSuscripcion(estaSuscrito);
             actualizarContadorSuscriptores(canalId);
+            mostrarDetallesCanal(canalId); // Nueva línea agregada
         },
         error: function(error) {
             console.error('Error al verificar suscripción:', error);
@@ -302,7 +313,6 @@ function cancelarSuscripcion(canalId) {
     });
 }
 
-// Función para actualizar el estado general del canal
 function actualizarEstadoCanal(canalId) {
     $.ajax({
         url: `/suscripciones/estado-general/${canalId}`,
@@ -311,11 +321,51 @@ function actualizarEstadoCanal(canalId) {
             'Authorization': 'Bearer ' + token
         },
         success: function(estado) {
-            // Aquí puedes actualizar más información del canal si lo deseas
             actualizarContadorSuscriptores(canalId);
         },
         error: function(error) {
             console.error('Error al obtener estado del canal:', error);
         }
     });
+}
+
+// Nuevas funciones agregadas
+function mostrarDetallesCanal(canalId) {
+    $.ajax({
+        url: `/suscripciones/canal/${canalId}/detalles`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        success: function(detalles) {
+            // Actualizar el nombre del canal
+            $('#channel-name').text(detalles.nombreCanal);
+            
+            // Si se hizo clic en el nombre del canal, mostrar lista de suscriptores
+            $('#channel-name').off('click').on('click', function() {
+                mostrarListaSuscriptores(detalles.suscriptores);
+            });
+        },
+        error: function(error) {
+            console.error('Error al obtener detalles del canal:', error);
+        }
+    });
+}
+
+function mostrarListaSuscriptores(suscriptores) {
+    const modal = $('#subscribersModal');
+    const lista = $('#subscribers-list');
+    lista.empty();
+    
+    suscriptores.forEach(sub => {
+        const fecha = new Date(sub.fechaSuscripcion).toLocaleDateString();
+        lista.append(`
+            <div class="subscriber-item">
+                <span class="subscriber-username">${sub.username}</span>
+                <span class="subscription-date">Suscrito desde: ${fecha}</span>
+            </div>
+        `);
+    });
+    
+    modal.show();
 }

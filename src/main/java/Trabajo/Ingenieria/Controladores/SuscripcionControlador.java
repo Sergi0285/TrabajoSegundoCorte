@@ -1,6 +1,7 @@
 package Trabajo.Ingenieria.Controladores;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.List;
 import java.time.LocalDateTime;
@@ -145,4 +146,29 @@ public class SuscripcionControlador {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("/canal/{canalId}/detalles")
+public ResponseEntity<Map<String, Object>> obtenerDetallesCanal(@PathVariable Long canalId) {
+    videos canal = videoServicio.findById(canalId);
+    if (canal == null) {
+        return ResponseEntity.notFound().build();
+    }
+
+    List<suscripcion> suscripciones = suscripcionServicio.getSuscripcionesByCanal(canalId);
+    List<Map<String, Object>> suscriptoresInfo = suscripciones.stream()
+        .map(sub -> {
+            Map<String, Object> info = new HashMap<>();
+            info.put("username", sub.getUsuario().getUsername());
+            info.put("fechaSuscripcion", sub.getFechaSuscripcion());
+            return info;
+        })
+        .collect(Collectors.toList());
+
+    Map<String, Object> detalles = new HashMap<>();
+    detalles.put("nombreCanal", canal.getUsuario().getUsername());
+    detalles.put("suscriptores", suscriptoresInfo);
+    detalles.put("totalSuscriptores", suscripciones.size());
+
+    return ResponseEntity.ok(detalles);
+}
 }
