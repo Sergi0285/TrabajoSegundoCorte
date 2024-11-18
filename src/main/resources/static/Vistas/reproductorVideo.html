@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Anime Template">
@@ -8,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Video</title>
 
-    <!-- Google Font -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -24,91 +25,124 @@
     <link rel="stylesheet" href="../Css/reproductorVideo.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
-     <!-- Header Section Begin -->
-     <header class="header">
+    <!-- Header Section Begin -->
+    <header class="header">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-2">
-                    <div class="header__logo">
-                        <a href="./index.html">
-                            <img src="../recursosPlantilla/img/logo.png" alt="">
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-8">
+            <div class="row align-items-center">
+                <!-- Navegación -->
+                <div class="col-lg-9 col-md-9 col-12">
                     <div class="header__nav">
-                        <nav class="header__menu mobile-menu">
-                            <ul>
-                                <li class="active"><a href="./index.html">Homepage</a></li>
-                                <li><a href="./categories.html">Categories <span class="arrow_carrot-down"></span></a>
-                                    <ul class="dropdown">
-                                        <li><a href="./categories.html">Categories</a></li>
-                                        <li><a href="./anime-details.html">Anime Details</a></li>
-                                        <li><a href="./anime-watching.html">Anime Watching</a></li>
-                                        <li><a href="./blog-details.html">Blog Details</a></li>
-                                        <li><a href="./signup.html">Sign Up</a></li>
-                                        <li><a href="./login.html">Login</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="./blog.html">Our Blog</a></li>
-                                <li><a href="#">Contacts</a></li>
-                            </ul>
+                        <nav class="navbar navbar-expand-lg navbar-dark">
+                            <a class="navbar-brand" href="../index.html">Pagina Principal</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                <ul class="navbar-nav ml-auto">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/recomendacionesVista.html">Recomendaciones</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/cargarVista.html">Cargar videos</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button class="btn btn-danger nav-link" onclick="logout()">Log out</button>
+                                    </li>
+                                </ul>
+                            </div>
                         </nav>
                     </div>
                 </div>
-                <div class="col-lg-2">
-                    <div class="header__right">
-                        <a href="#" class="search-switch"><span class="icon_search"></span></a>
-                        <a href="./login.html"><span class="icon_profile"></span></a>
-                    </div>
+
+                <!-- Perfil de usuario -->
+                <div class="col-lg-3 col-md-3 col-12 text-right">
+                    <a href="/Vistas/userEdit.html" class="btn btn-outline-light">
+                        <span class="icon_profile"></span> Perfil
+                    </a>
                 </div>
             </div>
-            <div id="mobile-menu-wrap"></div>
         </div>
     </header>
+    <!-- Header Section End -->
 
-    <div class="container">
-        <h1>Video Gallery</h1>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Reproductor</h1>
 
         <!-- Contenedor de los videos listados -->
-        <div id="videos-container" class="videos-list">
+        <div id="videos-container" class="row mb-4">
             <!-- Aquí se cargarán los videos -->
         </div>
 
         <!-- Sección de reproducción del video -->
-        <div id="video-player-container" class="video-player">
-            <h2 id="video-title">Selecciona un video para reproducir</h2>
-            <p id="video-description"></p>
-            <video id="video-player" controls>
-                <source id="video-source" src="" type="video/mp4">
-                Tu navegador no soporta la reproducción de este video.
-            </video>
+        <div id="video-player-container" class="video-player mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <p id="video-description" class="card-text"></p>
+                    <div class="subscription-container d-flex justify-content-between align-items-center mb-3">
+                        <button id="subscribe-button" class="btn btn-primary">Suscribirse</button>
+                        <span id="subscribers-count" class="subscribers-count"></span>
+                        <a href="#" id="channel-name" class="channel-name"></a>
+                    </div>
+                    
+                    <!-- Modal para mostrar la lista de suscriptores -->
+                    <div id="subscribersModal" class="modal fade" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Suscriptores del Canal</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="subscribers-list">
+                                    <!-- Aquí se cargarán los suscriptores -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <video id="video-player" class="w-100" controls>
+                        <source id="video-source" src="" type="video/mp4">
+                        Tu navegador no soporta la reproducción de este video.
+                    </video>
+                </div>
+            </div>
         </div>
 
         <!-- Sección de comentarios -->
-        <div id="comments-container" class="comments-section">
-            <h2>Comentarios</h2>
-            <div id="comments-list">
+        <div id="comments-container" class="comments-section mb-5">
+            <h2 class="mb-4">Comentarios</h2>
+            <div id="comments-list" class="mb-3">
                 <!-- Aquí se cargarán los comentarios -->
             </div>
-            <div class="comment-form">
-                <textarea id="comment-input" placeholder="Escribe tu comentario aquí..."></textarea>
-                <button id="submit-comment" data-video-id="">Agregar Comentario</button>
+            <div class="comment-form mb-4">
+                <textarea id="comment-input" class="form-control mb-2" placeholder="Escribe tu comentario aquí..." rows="3"></textarea>
+                <button id="submit-comment" class="btn btn-primary w-100" data-video-id="">Agregar Comentario</button>
             </div>
-        </div>
-        <!-- Modal para editar comentario -->
-        <div id="editCommentModal" class="modal">
-            <div class="modal-content">
-                <span class="close" id="close-modal">&times;</span>
-                <h2>Editar Comentario</h2>
-                <textarea id="edit-comment-input" placeholder="Escribe tu nuevo comentario aquí..."></textarea>
-                <button id="save-edit-comment">Guardar Cambios</button>
-            </div>
-        </div>
 
+            <!-- Modal para editar comentario -->
+            <div id="editCommentModal" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Editar Comentario</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <textarea id="edit-comment-input" class="form-control mb-2" placeholder="Escribe tu nuevo comentario aquí..." rows="3"></textarea>
+                            <button id="save-edit-comment" class="btn btn-success w-100">Guardar Cambios</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- JS Plugins -->
     <script src="../recursosPlantilla/Js/jquery-3.3.1.min.js"></script>
     <script src="../recursosPlantilla/Js/bootstrap.min.js"></script>
     <script src="../recursosPlantilla/Js/player.js"></script>
@@ -119,5 +153,6 @@
     <script src="../recursosPlantilla/Js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
     <script src="../JS/reproductorVideo.js"></script> <!-- Archivo JS para el listado de videos -->
+
 </body>
 </html>

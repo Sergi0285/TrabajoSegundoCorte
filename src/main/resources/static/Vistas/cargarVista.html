@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="spanish">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -9,11 +9,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cargar video</title>
 
-    <!-- Google Font -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Css Styles -->
+    <!-- CSS Styles -->
     <link rel="stylesheet" href="../recursosPlantilla/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="../recursosPlantilla/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="../recursosPlantilla/css/elegant-icons.css" type="text/css">
@@ -26,150 +26,140 @@
 </head>
 
 <body>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
 
     <!-- Header Section Begin -->
     <header class="header">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-2">
-                    <div class="header__logo">
-                        <a href="./index.html">
-                            <img src="img/logo.png" alt="">
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-8">
+            <div class="row align-items-center">
+                <!-- Navegación -->
+                <div class="col-lg-9 col-md-9 col-12">
                     <div class="header__nav">
-                        <nav class="header__menu mobile-menu">
-                            <ul>
-                                <li class="active"><a href="./index.html">Homepage</a></li>
-                                <li><a href="./categories.html">Categories <span class="arrow_carrot-down"></span></a>
-                                    <ul class="dropdown">
-                                        <li><a href="./categories.html">Categories</a></li>
-                                        <li><a href="./anime-details.html">Anime Details</a></li>
-                                        <li><a href="./anime-watching.html">Anime Watching</a></li>
-                                        <li><a href="./blog-details.html">Blog Details</a></li>
-                                        <li><a href="./signup.html">Sign Up</a></li>
-                                        <li><a href="./login.html">Login</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="./blog.html">Our Blog</a></li>
-                                <li><a href="#">Contacts</a></li>
-                            </ul>
+                        <nav class="navbar navbar-expand-lg navbar-dark">
+                            <a class="navbar-brand" href="../index.html">Pagina Principal</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                <ul class="navbar-nav ml-auto">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/Vistas/recomendacionesVista.html">Recomendaciones</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/Vistas/cargarVista.html">Cargar videos</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button class="btn btn-danger nav-link" onclick="logout()">Log out</button>
+                                    </li>
+                                </ul>
+                            </div>
                         </nav>
                     </div>
                 </div>
-                <div class="col-lg-2">
-                    <div class="header__right">
-                        <a href="#" class="search-switch"><span class="icon_search"></span></a>
-                        <a href="./login.html"><span class="icon_profile"></span></a>
-                    </div>
+
+                <!-- Perfil de usuario -->
+                <div class="col-lg-3 col-md-3 col-12 text-right">
+                    <a href="/Vistas/userEdit.html" class="btn btn-outline-light">
+                        <span class="icon_profile"></span> Perfil
+                    </a>
                 </div>
             </div>
-            <div id="mobile-menu-wrap"></div>
         </div>
     </header>
-    <!-- Header End -->
+    <!-- Header Section End -->
 
-<!-- Cargar video Begin -->
-<section class="anime-details spad upload-video">
-    <div class="container">
-        <h2 class="text-center mb-4">Cargar Video</h2>
-        <form id="uploadForm">
-            <div class="form-group">
-                <div class="section-title-propio">
-                    <h5>Título</h5>
+    <!-- Cargar video Begin -->
+    <section class="anime-details spad upload-video">
+        <div class="container">
+            <h2 class="text-center mb-4">Cargar Video</h2>
+            <form id="uploadForm" class="card p-4">
+                <!-- Título del video -->
+                <div class="form-group">
+                    <label for="title" class="section-title-propio">Título</label>
+                    <input type="text" id="title" name="title" class="form-control" required>
                 </div>
-                <input type="text" id="title" name="title" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <div class="section-title-propio">
-                    <h5>Descripcion</h5>
-                </div>
-                <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
-            </div>
-            <div class="form-group">
-                <div class="section-title-propio">
-                    <h5>Categorias</h5>
-                </div>
-                <div id="categoriesCheckboxes">
-                    <!-- Las categorías se llenarán con JavaScript -->
-                </div>
-            </div>
-            <div class="form-group">
-            <div class="section-title-propio">
-                <h5>Cargar video</h5>
-                </div>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="video" name="video" accept="video/*" required>
-                    <label class="custom-file-label" for="video">Elige un archivo</label>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="section-title-propio">
-                    <h5>Cargar imagen</h5>
-                </div>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
-                    <label class="custom-file-label" for="image">Elige un archivo</label>
-                </div>
-            </div>
-            <div class="text-center">
-                <button type="button" class="btn anime__details__btn__propio" onclick="subirVideo()">Subir video</button>
-            </div>
-        </form>
-    </div>
-</section>
-<!-- Cargar video End -->
 
+                <!-- Descripción del video -->
+                <div class="form-group">
+                    <label for="description" class="section-title-propio">Descripción</label>
+                    <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
+                </div>
 
-
-        <!-- Footer Section Begin -->
-        <footer class="footer">
-            <div class="page-up">
-                <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="footer__logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
-                        </div>
+                <!-- Categorías del video -->
+                <div class="form-group">
+                    <label class="section-title-propio">Categorías</label>
+                    <div id="categoriesCheckboxes" class="form-check">
+                        <!-- Las categorías se llenarán con JavaScript -->
                     </div>
-                    <div class="col-lg-6">
-                        <div class="footer__nav">
-                            <ul>
-                                <li class="active"><a href="./index.html">Homepage</a></li>
-                                <li><a href="./categories.html">Categories</a></li>
-                                <li><a href="./blog.html">Our Blog</a></li>
-                                <li><a href="#">Contacts</a></li>
-                            </ul>
-                        </div>
+                </div>
+
+                <!-- Archivo de video -->
+                <div class="form-group">
+                    <label for="video" class="section-title-propio">Cargar video</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="video" name="video" accept="video/*" required>
+                        <label class="custom-file-label" for="video">Elige un archivo</label>
                     </div>
-                    <div class="col-lg-3">
-                        <p>Todos los derechos reservados a Sergio S.A.S</p>
+                </div>
 
-                      </div>
-                  </div>
-              </div>
-          </footer>
-          <!-- Footer Section End -->
+                <!-- Imagen de video -->
+                <div class="form-group">
+                    <label for="image" class="section-title-propio">Cargar imagen</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
+                        <label class="custom-file-label" for="image">Elige un archivo</label>
+                    </div>
+                </div>
 
-        <!-- Js Plugins -->
-        <script src="../recursosPlantilla/Js/jquery-3.3.1.min.js"></script>
-        <script src="../recursosPlantilla/Js/bootstrap.min.js"></script>
-        <script src="../recursosPlantilla/Js/player.js"></script>
-        <script src="../recursosPlantilla/Js/jquery.nice-select.min.js"></script>
-        <script src="../recursosPlantilla/Js/mixitup.min.js"></script>
-        <script src="../recursosPlantilla/Js/jquery.slicknav.js"></script>
-        <script src="../recursosPlantilla/Js/owl.carousel.min.js"></script>
-        <script src="../recursosPlantilla/Js/main.js"></script>
-        <script src="../JS/cargarJS.js"></script>
+                <!-- Botón de carga -->
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary w-100 mt-3" onclick="subirVideo()">Subir video</button>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- Cargar video End -->
 
-    </body>
+    <!-- Footer Section Begin -->
+    <footer class="footer mt-5">
+        <div class="page-up">
+            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="footer__logo">
+                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <div class="footer__nav">
+                        <ul class="list-unstyled">
+                            <li><a href="./index.html">Homepage</a></li>
+                            <li><a href="./categories.html">Categories</a></li>
+                            <li><a href="./blog.html">Our Blog</a></li>
+                            <li><a href="#">Contacts</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 text-center mt-3 mt-lg-0">
+                    <p>Todos los derechos reservados a Sergio S.A.S</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
 
-    </html>
+    <!-- JS Plugins -->
+    <script src="../recursosPlantilla/Js/jquery-3.3.1.min.js"></script>
+    <script src="../recursosPlantilla/Js/bootstrap.min.js"></script>
+    <script src="../recursosPlantilla/Js/player.js"></script>
+    <script src="../recursosPlantilla/Js/jquery.nice-select.min.js"></script>
+    <script src="../recursosPlantilla/Js/mixitup.min.js"></script>
+    <script src="../recursosPlantilla/Js/jquery.slicknav.js"></script>
+    <script src="../recursosPlantilla/Js/owl.carousel.min.js"></script>
+    <script src="../recursosPlantilla/Js/main.js"></script>
+    <script src="../JS/cargarJS.js"></script>
+
+</body>
+
+</html>

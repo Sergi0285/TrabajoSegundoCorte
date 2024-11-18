@@ -139,9 +139,11 @@ ol {
 }
 
 .set-bg {
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: top center;
+    background-size: cover;
+    background-position: center;
+    height: 300px; /* Ajusta según lo que necesites */
+    aspect-ratio: 2/3; /* Esto asegura una proporción de imagen vertical */
+    border-radius: 10px;
 }
 
 .spad {
@@ -2339,4 +2341,34 @@ ol {
 	.anime__review__item__text {
 		padding: 18px 20px 20px;
 	}
+}
+
+/* Estilos para el botón */
+button {
+    background-color: #e74c3c; /* Color de fondo rojo */
+    color: #fff; /* Color de texto blanco */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    border: none; /* Sin bordes */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Manito en hover */
+    transition: background-color 0.3s, transform 0.2s; /* Animación suave */
+}
+
+/* Efecto hover para el botón */
+button:hover {
+    background-color: #c0392b; /* Color más oscuro en hover */
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+}
+
+/* Efecto de clic */
+button:active {
+    background-color: #a93226; /* Color más oscuro al hacer clic */
+    transform: scale(0.95); /* Se reduce ligeramente al hacer clic */
+}
+
+/* Estilo para deshabilitar el botón */
+button:disabled {
+    background-color: #bdc3c7; /* Color gris cuando está deshabilitado */
+    cursor: not-allowed; /* No se puede hacer clic */
 }

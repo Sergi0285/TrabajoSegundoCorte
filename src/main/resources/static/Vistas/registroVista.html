@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -7,13 +7,13 @@
     <meta name="keywords" content="Anime, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Anime | Template</title>
+    <title>Registro de usuario</title>
 
-    <!-- Google Font -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Css Styles -->
+    <!-- CSS Styles -->
     <link rel="stylesheet" href="../recursosPlantilla/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="../recursosPlantilla/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="../recursosPlantilla/css/elegant-icons.css" type="text/css">
@@ -22,63 +22,19 @@
     <link rel="stylesheet" href="../recursosPlantilla/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="../recursosPlantilla/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="../recursosPlantilla/css/style.css" type="text/css">
+    <link rel="stylesheet" href="../Css/registroCss.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
 
-    <!-- Header Section Begin -->
-    <header class="header">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-2">
-                    <div class="header__logo">
-                        <a href="./index.html">
-                            <img src="img/logo.png" alt="">
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-8">
-                    <div class="header__nav">
-                        <nav class="header__menu mobile-menu">
-                            <ul>
-                                <li><a href="./index.html">Homepage</a></li>
-                                <li><a href="./categories.html">Categories <span class="arrow_carrot-down"></span></a>
-                                    <ul class="dropdown">
-                                        <li><a href="./categories.html">Categories</a></li>
-                                        <li><a href="./anime-details.html">Anime Details</a></li>
-                                        <li><a href="./anime-watching.html">Anime Watching</a></li>
-                                        <li><a href="./blog-details.html">Blog Details</a></li>
-                                        <li><a href="./signup.html">Sign Up</a></li>
-                                        <li><a href="./login.html">Login</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="./blog.html">Our Blog</a></li>
-                                <li><a href="#">Contacts</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="header__right">
-                        <a href="#" class="search-switch"><span class="icon_search"></span></a>
-                        <a href="./login.html"><span class="icon_profile"></span></a>
-                    </div>
-                </div>
-            </div>
-            <div id="mobile-menu-wrap"></div>
-        </div>
-    </header>
-    <!-- Header End -->
-
     <!-- Normal Breadcrumb Begin -->
-    <section class="normal-breadcrumb set-bg" data-setbg="img/normal-breadcrumb.jpg">
+    <section class="normal-breadcrumb set-bg py-3" data-setbg="img/normal-breadcrumb.jpg">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="normal__breadcrumb__text">
-                        <h2>Sign Up</h2>
-                        <p>Welcome to the official Anime blog.</p>
+                        <h2>Registro de Usuario</h2>
                     </div>
                 </div>
             </div>
@@ -90,48 +46,92 @@
     <section class="signup spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6">
+                <!-- Formulario de registro -->
+                <div class="col-lg-6 col-md-12">
                     <div class="login__form">
-                        <h3>Registro de Usuario</h3>
-                        <input id="usuarioname" class="form-control" placeholder="Nombre">
-                        <input id="usuariocorreo" class="form-control" placeholder="Correo">
-                        <input id="usuarioalias" class="form-control" placeholder="Alias">
-                        <input id="usuariocel" class="form-control" placeholder="Celular">
-                        <div>
-                            <input id="usuariocontrasena" type="password" placeholder="Contraseña" required>
-                            <span class="icon_lock"></span>
-                            <button type="button" id="togglePassword" title="Mostrar/Ocultar contraseña">
-                                <i class="fas fa-eye" id="eyeIcon"></i>
-                            </button>
-                            <button type="button" id="generatePasswordBtn" title="Generar contraseña segura">
-                                <span class="fa-solid fa-key"></span>
-                            </button>
-                        </div>
-
-                        <div class="profile-picture-selection">
-                            <h4>Elige una imagen de perfil:</h4>
-                            <div class="image-options">
-                                <label>
-                                    <input type="radio" name="profilePicture" value="img/profile1.png" required>
-                                    <img src="img/profile1.png" alt="Profile 1" style="width: 60px; height: 60px; border-radius: 50%;">
-                                </label>
-                                <label>
-                                    <input type="radio" name="profilePicture" value="img/profile2.png">
-                                    <img src="img/profile2.png" alt="Profile 2" style="width: 60px; height: 60px; border-radius: 50%;">
-                                </label>
-                                <label>
-                                    <input type="radio" name="profilePicture" value="img/profile3.png">
-                                    <img src="img/profile3.png" alt="Profile 3" style="width: 60px; height: 60px; border-radius: 50%;">
-                                </label>
-                                <label>
-                                    <input type="radio" name="profilePicture" value="img/profile4.png">
-                                    <img src="img/profile4.png" alt="Profile 4" style="width: 60px; height: 60px; border-radius: 50%;">
-                                </label>
+                        <form id="registrationForm">
+                            <!-- Grupo para el nombre -->
+                            <div class="form-group input-container">
+                                <label for="usuarioname" class="form-label">Nombre</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <input id="usuarioname" class="form-control" placeholder="Nombre" required aria-label="Nombre del usuario">
+                                </div>
                             </div>
-                        </div>
 
-                        <button class="btn btn-primary" onclick="saveUsuario()">Registrarse</button>
-                        <h5>¿Tienes una cuenta? <a href="../Vistas/inicioVista.html">¡Inicia Sesión!</a></h5>
+                            <!-- Grupo para el correo -->
+                            <div class="form-group input-container">
+                                <label for="usuariocorreo" class="form-label">Correo</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input id="usuariocorreo" class="form-control" placeholder="Correo" type="email" required aria-label="Correo electrónico">
+                                </div>
+                            </div>
+
+                            <!-- Grupo para el alias -->
+                            <div class="form-group input-container">
+                                <label for="usuarioalias" class="form-label">Alias</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
+                                    <input id="usuarioalias" class="form-control" placeholder="Alias" required aria-label="Alias del usuario">
+                                </div>
+                            </div>
+
+                            <!-- Grupo para el celular -->
+                            <div class="form-group input-container">
+                                <label for="usuariocel" class="form-label">Celular</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    <input id="usuariocel" class="form-control" placeholder="Celular" required aria-label="Número de celular">
+                                </div>
+                            </div>
+
+                            <!-- Grupo para la contraseña -->
+                            <div class="form-group input-container">
+                                <label for="usuariocontrasena" class="form-label">Contraseña</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input id="usuariocontrasena" class="form-control" placeholder="Contraseña" type="password" required aria-label="Contraseña">
+                                    <button type="button" id="togglePassword" class="btn btn-outline-secondary" aria-label="Mostrar/Ocultar Contraseña">
+                                        <i class="far fa-eye"></i>
+                                    </button>
+                                    <button type="button" id="generatePasswordBtn" class="btn btn-outline-secondary" aria-label="Generar Contraseña">
+                                        <i class="fas fa-key"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Botón de guardar -->
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary btn-block" id="saveButton">Guardar Usuario</button>
+                            </div>
+
+                            <div class="text-center mt-3">
+                                <h5>¿Tienes una cuenta? <a href="../Vistas/inicioVista.html">¡Inicia Sesión!</a></h5>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Sección de imagen de perfil -->
+                <div class="col-lg-6 col-md-12">
+                    <!-- Cargar nueva imagen -->
+                    <div class="form-group">
+                        <label for="profileImageInput" class="form-label">Selecciona una imagen de perfil:</label>
+                        <input type="file" id="profileImageInput" accept="image/*" class="form-control-file" />
+                        <img id="customImagePreview" src="" alt="Vista previa de la imagen" class="img-fluid mt-3" style="display: none; max-width: 100px;" />
+                    </div>
+
+                    <!-- Seleccionar imagen por defecto -->
+                    <div class="form-group mt-4">
+                        <label for="defaultImageSelect" class="form-label">O elige una imagen por defecto:</label>
+                        <select id="defaultImageSelect" class="form-control">
+                            <option value="">-- Seleccionar imagen por defecto --</option>
+                            <option value="../Imagenes/perfil1.png">Imagen 1</option>
+                            <option value="../Imagenes/perfil2.png">Imagen 2</option>
+                            <option value="../Imagenes/perfil3.png">Imagen 3</option>
+                            <option value="../Imagenes/perfil4.png">Imagen 4</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -139,49 +139,16 @@
     </section>
     <!-- Signup Section End -->
 
-    <!-- Footer Section Begin -->
-    <footer class="footer">
-        <div class="page-up">
-            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="footer__logo">
-                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="footer__nav">
-                        <ul>
-                            <li class="active"><a href="./index.html">Homepage</a></li>
-                            <li><a href="./categories.html">Categories</a></li>
-                            <li><a href="./blog.html">Our Blog</a></li>
-                            <li><a href="#">Contacts</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="footer__social">
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                        <a href="#"><i class="fa fa-youtube"></i></a>
-                        <a href="#"><i class="fa fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer Section End -->
-
+    <!-- JS Plugins -->
     <script src="../recursosPlantilla/js/jquery-3.3.1.min.js"></script>
     <script src="../recursosPlantilla/js/bootstrap.min.js"></script>
-    <script src="../recursosPlantilla/js/jquery.nice-select.min.js"></script>
-    <script src="../recursosPlantilla/js/jquery.magnific-popup.min.js"></script>
     <script src="../recursosPlantilla/js/plyr.js"></script>
+    <script src="../recursosPlantilla/js/nice-select.js"></script>
     <script src="../recursosPlantilla/js/owl.carousel.min.js"></script>
+    <script src="../recursosPlantilla/js/slicknav.min.js"></script>
     <script src="../recursosPlantilla/js/main.js"></script>
-    <script type="text/JavaScript" src="../JS/registroJs.js"></script>
+    <script src="../JS/registroJs.js"></script>
+
 </body>
 
 </html>

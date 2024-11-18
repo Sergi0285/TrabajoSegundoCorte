@@ -38,6 +38,7 @@ public class usuario implements UserDetails{
     String username;
     String correo;
     String celular;
+    String perfil;
     String password;
     @Enumerated(EnumType.STRING) 
     role rol;
@@ -62,5 +63,8 @@ public class usuario implements UserDetails{
     @Override
     public boolean isEnabled() {
         return true;
+    }
+    public String getEmail() {
+        return correo;
     }
 }

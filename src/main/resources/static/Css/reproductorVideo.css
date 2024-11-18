@@ -64,6 +64,21 @@ h1 {
     margin-bottom: 15px;
 }
 
+.subscription-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.subscribers-count {
+    font-size: 14px;
+    color: #666;
+}
+
+#channel-name:hover {
+    color: black;
+}
+
 #video-player {
     width: 100%;
     max-height: 500px;

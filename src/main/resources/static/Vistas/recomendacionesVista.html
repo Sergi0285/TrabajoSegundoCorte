@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Anime Template">
+    <meta name="keywords" content="Anime, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Recomendaciones</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="../../recursosPlantilla/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../../recursosPlantilla/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="../../recursosPlantilla/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="../../recursosPlantilla/css/plyr.css" type="text/css">
+    <link rel="stylesheet" href="../../recursosPlantilla/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="../../recursosPlantilla/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="../../recursosPlantilla/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="../../recursosPlantilla/css/style.css" type="text/css">
+</head>
+
+<body>
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Navegación -->
+                <div class="col-lg-9 col-md-9 col-12">
+                    <div class="header__nav">
+                        <nav class="navbar navbar-expand-lg navbar-dark">
+                            <a class="navbar-brand" href="../index.html">Pagina Principal</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                <ul class="navbar-nav ml-auto">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/Vistas/recomendacionesVista.html">Recomendaciones</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/Vistas/cargarVista.html">Cargar videos</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button class="btn btn-danger nav-link" onclick="logout()">Log out</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Perfil de usuario -->
+                <div class="col-lg-3 col-md-3 col-12 text-right">
+                    <a href="/Vistas/userEdit.html" class="btn btn-outline-light">
+                        <span class="icon_profile"></span> Perfil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+    <!-- Product Section Begin -->
+    <section class="product spad mt-5">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h4 class="section-title">Recomendaciones</h4>
+                </div>
+            </div>
+
+            <!-- Contenedor de recomendaciones -->
+            <div id="recomendacionesContainer" class="row">
+                <!-- Aquí se cargarán las recomendaciones -->
+            </div>
+        </div>
+    </section>
+    <!-- Product Section End -->
+
+    <!-- Search model Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch"><i class="icon_close"></i></div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" class="form-control" placeholder="Buscar aquí...">
+            </form>
+        </div>
+    </div>
+    <!-- Search model end -->
+
+    <!-- JS Plugins -->
+    <script src="../recursosPlantilla/js/jquery-3.3.1.min.js"></script>
+    <script src="../recursosPlantilla/js/bootstrap.min.js"></script>
+    <script src="../recursosPlantilla/js/player.js"></script>
+    <script src="../recursosPlantilla/js/jquery.nice-select.min.js"></script>
+    <script src="../recursosPlantilla/js/mixitup.min.js"></script>
+    <script src="../recursosPlantilla/js/jquery.slicknav.js"></script>
+    <script src="../recursosPlantilla/js/owl.carousel.min.js"></script>
+    <script src="../recursosPlantilla/js/main.js"></script>
+    <script src="../JS/recomendaciones.js"></script>
+
+</body>
+
+</html>

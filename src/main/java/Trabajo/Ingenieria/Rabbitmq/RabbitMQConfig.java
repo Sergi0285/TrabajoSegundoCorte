@@ -19,7 +19,7 @@ public class RabbitMQConfig {
     public Queue colaMiniatura() {
         return new Queue("miniatura.cola", true);
     }
-    
+
     @Bean
     public Queue colaSubirVideo() {
         return new Queue("video.cola", true);
@@ -38,5 +38,15 @@ public class RabbitMQConfig {
     @Bean
     public Queue colaDeleteComentario() {
         return new Queue("comentario.cola.delete", true);
+    }
+
+    @Bean
+    public Queue colaSuscripcion() {
+        return new Queue("suscripcion.cola", true);
+    }
+
+    @Bean
+    public Queue colaNuevoVideo() {
+        return new Queue("nuevoVideo.cola", true);
     }
 }
