@@ -135,4 +135,8 @@ public class videosServicio {
         byte[] file = Base64.getDecoder().decode(files);
         Files.write(url, file);
     }
+
+    public List<videos> findByUsuarioId(Long usuarioId) {
+        return videoRepository.findByUsuarioId(usuarioId);
+    }
 }

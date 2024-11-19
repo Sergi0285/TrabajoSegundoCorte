@@ -12,7 +12,8 @@ let currentEditingCommentId = null;
 
 $(document).ready(function() {
     verificarTokenYRedireccionarALogin();
-    playVideo(identificador); 
+    playVideo(identificador);
+    obtenerPropietarioVideo(identificador); // Llama a la nueva función para obtener el propietario del video
     
     $('#submit-comment').on('click', function() {
         const videoId = $(this).data('video-id');
@@ -115,8 +116,8 @@ function loadComments(videoId) {
                             ${comentario.comentario} 
                             <em class="comment-date">${comentario.fechaComentario}</em>
                         </p>
-                        ${isOwner ? `
-                        <div class="options-menu">⋮
+                        ${isOwner ? 
+                        `<div class="options-menu">⋮
                             <div class="options-menu-content">
                                 <a href="#" class="edit-comment" data-id="${comentario.idComentario}" data-comment="${comentario.comentario}">Editar</a>
                                 <a href="#" class="delete-comment" data-id="${comentario.idComentario}">Eliminar</a>
@@ -248,7 +249,6 @@ function verificarSuscripcion(canalId) {
         success: function(estaSuscrito) {
             actualizarBotonSuscripcion(estaSuscrito);
             actualizarContadorSuscriptores(canalId);
-            mostrarDetallesCanal(canalId); // Nueva línea agregada
         },
         error: function(error) {
             console.error('Error al verificar suscripción:', error);
@@ -329,43 +329,58 @@ function actualizarEstadoCanal(canalId) {
     });
 }
 
-// Nuevas funciones agregadas
-function mostrarDetallesCanal(canalId) {
+function obtenerPropietarioVideo(videoId) {
     $.ajax({
-        url: `/suscripciones/canal/${canalId}/detalles`,
+        url: `/suscripciones/video-detalles/${videoId}`,
         type: 'GET',
         headers: {
             'Authorization': 'Bearer ' + token
         },
         success: function(detalles) {
-            // Actualizar el nombre del canal
-            $('#channel-name').text(detalles.nombreCanal);
-            
-            // Si se hizo clic en el nombre del canal, mostrar lista de suscriptores
-            $('#channel-name').off('click').on('click', function() {
-                mostrarListaSuscriptores(detalles.suscriptores);
+            $('#owner-name').text(`Propietario (Alias): ${detalles.usuarioAlias}`);
+            $('#owner-name').off('click').on('click', function () {
+                mostrarSeguidoresPropietario(detalles.usuarioAlias); // Llama a la función con el alias
             });
         },
-        error: function(error) {
-            console.error('Error al obtener detalles del canal:', error);
+        error: function (error) {
+            console.error('Error al obtener los detalles del video:', error);
         }
     });
 }
 
-function mostrarListaSuscriptores(suscriptores) {
-    const modal = $('#subscribersModal');
-    const lista = $('#subscribers-list');
-    lista.empty();
-    
-    suscriptores.forEach(sub => {
-        const fecha = new Date(sub.fechaSuscripcion).toLocaleDateString();
-        lista.append(`
-            <div class="subscriber-item">
-                <span class="subscriber-username">${sub.username}</span>
-                <span class="subscription-date">Suscrito desde: ${fecha}</span>
-            </div>
-        `);
+
+function mostrarSeguidoresPropietario(alias) {
+    $.ajax({
+        url: `/suscripciones/propietario-seguidores/${alias}`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        success: function (seguidores) {
+            const modal = $('#subscribersModal');
+            const lista = $('#subscribers-list');
+            lista.empty();
+
+            if (seguidores && seguidores.length > 0) {
+                seguidores.forEach(seguidor => {
+                    const fecha = new Date(seguidor.fecha).toLocaleDateString();
+                    lista.append(`
+                        <div class="subscriber-item">
+                            <span class="subscriber-username">${seguidor.alias}</span>
+                            <span class="subscription-date">Suscrito desde: ${fecha}</span>
+                        </div>
+                    `);
+                });
+            } else {
+                lista.append('<p>No tiene seguidores aún.</p>');
+            }
+
+            modal.show(); // Mostrar el modal
+        },
+        error: function (error) {
+            console.error('Error al obtener los seguidores del propietario:', error);
+        }
     });
-    
-    modal.show();
 }
+
+

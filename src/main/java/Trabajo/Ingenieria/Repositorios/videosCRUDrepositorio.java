@@ -28,4 +28,7 @@ public interface videosCRUDrepositorio extends JpaRepository<videos, Long> {
         + "AND v.idVideo NOT IN "
         + "(SELECT vis.videos.idVideo FROM visualizacion vis WHERE vis.usuarioUsername = :username)")
     List<videos> findUnwatchedVideosByCategory(@Param("username") String username, @Param("categoria") categoria categoria);
+
+    @Query("SELECT v FROM videos v WHERE v.usuario.id = :usuarioId")
+    List<videos> findByUsuarioId(@Param("usuarioId") Long usuarioId);
 }

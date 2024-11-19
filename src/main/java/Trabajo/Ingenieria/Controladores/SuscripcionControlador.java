@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.web.exchanges.HttpExchange.Principal;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,51 +48,75 @@ public class SuscripcionControlador {
     
 
     @PostMapping("/suscribirse")
-    public ResponseEntity<String> crearSuscripcion(@RequestBody Map<String, String> request) {
-        String username = request.get("username");
-        Long canalId = Long.parseLong(request.get("canalId"));
+public ResponseEntity<String> crearSuscripcion(@RequestBody Map<String, String> request) {
+    String username = request.get("username");
+    Long canalId = Long.parseLong(request.get("canalId"));
 
-        // Buscar el canal por su ID
-        videos canal = videoServicio.findById(canalId);
-        if (canal == null) {
-            return new ResponseEntity<>("Canal no encontrado", HttpStatus.NOT_FOUND);
-        }
-
-        // Buscar el usuario suscriptor por su nombre de usuario
-        usuario suscriptor = clienteServicio.findByUsername(username);
-        if (suscriptor == null) {
-            return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
-        }
-
-        // Verificar si ya existe la suscripción
-        if (suscripcionServicio.existsSuscripcion(suscriptor.getId(), canalId)) {
-            return new ResponseEntity<>("Ya existe una suscripción a este canal", HttpStatus.BAD_REQUEST);
-        }
-
-        // Crear la suscripción
-        suscripcion nuevaSuscripcion = new suscripcion();
-        nuevaSuscripcion.setFechaSuscripcion(LocalDateTime.now());
-        nuevaSuscripcion.setUsuario(suscriptor);
-        nuevaSuscripcion.setVideo(canal);
-
-        // Guardar la suscripción
-        suscripcionServicio.addSuscripcion(nuevaSuscripcion);
-        notificationService.enviarNotificacionSuscripcion(canalId, suscriptor.getEmail());
-
-        return new ResponseEntity<>("Suscripción realizada exitosamente", HttpStatus.CREATED);
+    // Verificar que el video exista
+    videos canal = videoServicio.findById(canalId);
+    if (canal == null) {
+        return new ResponseEntity<>("Canal no encontrado", HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/cancelar")
-    public ResponseEntity<String> cancelarSuscripcion(@RequestBody Map<String, String> request) {
-        String username = request.get("username");
-        Long canalId = Long.parseLong(request.get("canalId"));
+    usuario dueñoCanal = canal.getUsuario();
+    if (dueñoCanal == null) {
+        return new ResponseEntity<>("El canal no tiene un dueño asignado", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-        boolean cancelada = suscripcionServicio.deleteSuscripcion(username, canalId);
-        if (cancelada) {
-            return ResponseEntity.ok("Suscripción cancelada exitosamente");
-        } else {
-            return new ResponseEntity<>("Suscripción no encontrada", HttpStatus.NOT_FOUND);
+    usuario suscriptor = clienteServicio.findByUsername(username);
+    if (suscriptor == null) {
+        return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
+    }
+
+    // Suscribir al usuario a todos los videos del dueño
+    List<videos> videosDelDueño = videoServicio.findByUsuarioId(dueñoCanal.getId());
+    videosDelDueño.forEach(video -> {
+        if (!suscripcionServicio.existsSuscripcion(suscriptor.getId(), video.getIdVideo())) {
+            suscripcion nuevaSuscripcion = new suscripcion();
+            nuevaSuscripcion.setUsuario(suscriptor);
+            nuevaSuscripcion.setVideo(video);
+            nuevaSuscripcion.setCanalUsuario(dueñoCanal);
+            nuevaSuscripcion.setFechaSuscripcion(LocalDateTime.now());
+            suscripcionServicio.addSuscripcion(nuevaSuscripcion, video.getIdVideo());
         }
+    });
+
+    return new ResponseEntity<>("Suscripción realizada exitosamente", HttpStatus.CREATED);
+}
+
+
+@DeleteMapping("/cancelar")
+public ResponseEntity<String> cancelarSuscripcion(@RequestBody Map<String, String> request) {
+    String username = request.get("username");
+    Long canalId = Long.parseLong(request.get("canalId"));
+
+    videos canal = videoServicio.findById(canalId);
+    if (canal == null) {
+        return new ResponseEntity<>("Canal no encontrado", HttpStatus.NOT_FOUND);
+    }
+
+    usuario dueñoCanal = canal.getUsuario();
+    if (dueñoCanal == null) {
+        return new ResponseEntity<>("El canal no tiene un dueño asignado", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    usuario suscriptor = clienteServicio.findByUsername(username);
+    if (suscriptor == null) {
+        return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
+    }
+
+    List<videos> videosDelDueño = videoServicio.findByUsuarioId(dueñoCanal.getId());
+    videosDelDueño.forEach(video -> {
+        suscripcionServicio.deleteSuscripcion(suscriptor.getUsername(), video.getIdVideo());
+    });
+
+    return ResponseEntity.ok("Suscripción cancelada exitosamente");
+}
+
+    @GetMapping("/total-suscriptores/{usuarioId}")
+    public ResponseEntity<Long> obtenerTotalSuscriptores(@PathVariable Long usuarioId) {
+        Long totalSuscriptores = suscripcionServicio.getTotalSuscriptoresPorUsuario(usuarioId);
+        return ResponseEntity.ok(totalSuscriptores);
     }
 
     @GetMapping("/canal/{canalId}")
@@ -132,18 +157,20 @@ public class SuscripcionControlador {
         return ResponseEntity.ok(numeroSuscriptores);
     }
 
-    @GetMapping("/total-suscripciones/{username}")
-    public ResponseEntity<Long> obtenerTotalSuscripciones(@PathVariable String username) {
-        // Buscar el usuario
-        usuario user = clienteServicio.findByUsername(username);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
+    @GetMapping("/usuario-total-suscriptores/{usuarioId}")
+    public ResponseEntity<Map<String, Object>> obtenerTotalSuscriptoresUsuario(@PathVariable Long usuarioId) {
+        Long totalSuscriptores = suscripcionServicio.getTotalSuscriptoresPorUsuario(usuarioId);
+        usuario usuario = clienteServicio.findById(usuarioId);
+
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        
-        // Obtener el número total de suscripciones del usuario
-        Long totalSuscripciones = suscripcionServicio.getNumeroSuscripciones(user.getId());
-        return ResponseEntity.ok(totalSuscripciones);
-    }
+
+    Map<String, Object> respuesta = new HashMap<>();
+    respuesta.put("totalSuscriptores", totalSuscriptores);
+    respuesta.put("nombreUsuario", usuario.getUsername());
+    return ResponseEntity.ok(respuesta);
+}
     
     @GetMapping("/estado-general/{canalId}")
     public ResponseEntity<Map<String, Object>> obtenerEstadoGeneral(@PathVariable Long canalId) {
@@ -165,12 +192,15 @@ public class SuscripcionControlador {
     }
 
     @GetMapping("/canal/{canalId}/detalles")
-public ResponseEntity<Map<String, Object>> obtenerDetallesCanal(@PathVariable Long canalId) {
-    videos canal = videoServicio.findById(canalId);
-    if (canal == null) {
-        return ResponseEntity.notFound().build();
-    }
+    public ResponseEntity<Map<String, Object>> obtenerDetallesCanal(@PathVariable Long canalId) {
+        videos canal = videoServicio.findById(canalId);
+        if (canal == null) {
+            return ResponseEntity.notFound().build();
+     }
 
+    // Obtener el nombre del propietario del canal (usuario que subió el video)
+    String nombrePropietario = canal.getUsuario().getNombre(); // Supongamos que el campo es "nombre"
+    
     List<suscripcion> suscripciones = suscripcionServicio.getSuscripcionesByCanal(canalId);
     List<Map<String, Object>> suscriptoresInfo = suscripciones.stream()
         .map(sub -> {
@@ -182,12 +212,53 @@ public ResponseEntity<Map<String, Object>> obtenerDetallesCanal(@PathVariable Lo
         .collect(Collectors.toList());
 
     Map<String, Object> detalles = new HashMap<>();
-    detalles.put("nombreCanal", canal.getUsuario().getUsername());
+    detalles.put("nombreCanal", canal.getUsuario().getUsername()); // Este ya lo tienes
+    detalles.put("nombrePropietario", nombrePropietario); // Nuevo campo con el nombre real del usuario
     detalles.put("suscriptores", suscriptoresInfo);
     detalles.put("totalSuscriptores", suscripciones.size());
 
     return ResponseEntity.ok(detalles);
 }
+
+@GetMapping("/video-detalles/{id}")
+public ResponseEntity<Map<String, Object>> obtenerDetallesVideo(@PathVariable Long id) {
+    videos video = videoServicio.findById(id);
+    if (video == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
+    Map<String, Object> detalles = new HashMap<>();
+    detalles.put("titulo", video.getTitulo());
+    detalles.put("descripcion", video.getDescripcion());
+    detalles.put("usuarioAlias", video.getUsuario().getUsername()); // Alias (username) del propietario
+    detalles.put("usuarioNombre", video.getUsuario().getNombre()); // Nombre del propietario
+
+    return ResponseEntity.ok(detalles);
+}
+
+    @GetMapping("/propietario-seguidores/{alias}")
+    public ResponseEntity<List<Map<String, Object>>> obtenerSeguidoresPropietario(@PathVariable String alias) {
+    usuario propietario = clienteServicio.findByUsername(alias);
+        if (propietario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        List<suscripcion> suscripciones = suscripcionServicio.getSuscripcionesByUsuario(propietario.getId());
+        if (suscripciones == null || suscripciones.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+     }
+
+        List<Map<String, Object>> seguidores = suscripciones.stream()
+            .map(suscripcion -> {
+             Map<String, Object> seguidorInfo = new HashMap<>();
+                seguidorInfo.put("alias", suscripcion.getUsuario().getUsername());
+                seguidorInfo.put("fecha", suscripcion.getFechaSuscripcion());
+                return seguidorInfo;
+            })
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok(seguidores);
+    }
  // Nuevo endpoint para manejar la notificación de suscripción
     @PostMapping("/notificar")
     public ResponseEntity<?> notificarSuscripcion(@RequestBody NotificacionSuscripcion notificacion) {

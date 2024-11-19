@@ -90,4 +90,8 @@ public class clienteServicio {
             throw new RuntimeException("Usuario no encontrado");
         }
     }
+
+    public usuario findById(Long id) {
+        return usuarioRepository.findById(id).orElse(null);
+    }
 }

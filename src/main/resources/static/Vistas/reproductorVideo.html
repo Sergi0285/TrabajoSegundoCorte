@@ -35,7 +35,7 @@
                 <div class="col-lg-9 col-md-9 col-12">
                     <div class="header__nav">
                         <nav class="navbar navbar-expand-lg navbar-dark">
-                            <a class="navbar-brand" href="../index.html">Pagina Principal</a>
+                            <a class="navbar-brand" href="../index.html">Página Principal</a>
                             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
                             </button>
@@ -70,34 +70,31 @@
     <div class="container mt-5">
         <h1 class="text-center mb-4">Reproductor</h1>
 
-        <!-- Contenedor de los videos listados -->
-        <div id="videos-container" class="row mb-4">
-            <!-- Aquí se cargarán los videos -->
-        </div>
-
         <!-- Sección de reproducción del video -->
         <div id="video-player-container" class="video-player mb-4">
             <div class="card">
                 <div class="card-body">
+                    <h4 id="video-title" class="card-title"></h4>
                     <p id="video-description" class="card-text"></p>
+
                     <div class="subscription-container d-flex justify-content-between align-items-center mb-3">
                         <button id="subscribe-button" class="btn btn-primary">Suscribirse</button>
                         <span id="subscribers-count" class="subscribers-count"></span>
-                        <a href="#" id="channel-name" class="channel-name"></a>
                     </div>
-                    
-                    <!-- Modal para mostrar la lista de suscriptores -->
+                    <p id="owner-name" class="text-muted" style="cursor: pointer;">Propietario: </p>
+
+                    <!-- Modal para mostrar la lista de seguidores -->
                     <div id="subscribersModal" class="modal fade" tabindex="-1" role="dialog">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Suscriptores del Canal</h5>
+                                    <h5 class="modal-title">Seguidores del Propietario</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body" id="subscribers-list">
-                                    <!-- Aquí se cargarán los suscriptores -->
+                                    <!-- Aquí se cargarán los seguidores -->
                                 </div>
                             </div>
                         </div>
@@ -152,7 +149,7 @@
     <script src="../recursosPlantilla/Js/owl.carousel.min.js"></script>
     <script src="../recursosPlantilla/Js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
-    <script src="../JS/reproductorVideo.js"></script> <!-- Archivo JS para el listado de videos -->
-
+    <script src="../JS/reproductorVideo.js"></script>
 </body>
+
 </html>

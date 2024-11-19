@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import Trabajo.Ingenieria.DTOs.NotificacionNuevoVideo;
 import Trabajo.Ingenieria.Entidades.suscripcion;
 import Trabajo.Ingenieria.Entidades.usuario;
+import Trabajo.Ingenieria.Entidades.videos;
 import Trabajo.Ingenieria.Repositorios.suscripcionRepositorio;
 import Trabajo.Ingenieria.Repositorios.usuarioRepositorio;
 
@@ -28,13 +29,21 @@ public class suscripcionService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Autowired
+    private videosServicio videosServicio;
+
     /**
      * Agrega una nueva suscripción
      */
     @Transactional
-    public suscripcion addSuscripcion(suscripcion nuevaSuscripcion) {
-        return suscripcionRepo.save(nuevaSuscripcion);
+    public suscripcion addSuscripcion(suscripcion nuevaSuscripcion, Long canalId) {
+        videos video = videosServicio.findById(canalId);
+        if (video != null) {
+        nuevaSuscripcion.setCanalUsuario(video.getUsuario()); // Enlazar al dueño del canal
+        }
+     return suscripcionRepo.save(nuevaSuscripcion);
     }
+
 
     /**
      * Elimina una suscripción dado el username del suscriptor y el ID del canal
@@ -113,5 +122,10 @@ public class suscripcionService {
             }
         }
     }
-    
+    public Long getTotalSuscriptoresPorUsuario(Long usuarioId) {
+        return suscripcionRepo.countByCanalUsuarioId(usuarioId);
+    }
+    public List<videos> getVideosByUsuario(Long usuarioId) {
+        return videosServicio.findByUsuarioId(usuarioId);
+    }
 }

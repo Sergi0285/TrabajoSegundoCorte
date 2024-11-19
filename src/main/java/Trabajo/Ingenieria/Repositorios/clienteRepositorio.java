@@ -1,6 +1,7 @@
 package Trabajo.Ingenieria.Repositorios;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -29,5 +30,9 @@ public class clienteRepositorio {
 
     public List<usuario> getAllUsuarios() {
         return (List<usuario>) clienteCRUD.findAll();
+    }
+
+    public Optional<usuario> findById(Long id) {
+        return clienteCRUD.findById(id);
     }
 }

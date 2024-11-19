@@ -34,4 +34,8 @@ public class videosRepositorio {
     public List<videos> findUnwatchedVideosByCategory(String username, categoria categoria) {
         return video.findUnwatchedVideosByCategory(username, categoria);
     }
+
+    public List<videos> findByUsuarioId(Long usuarioId) {
+        return video.findByUsuarioId(usuarioId);
+    }
 }
