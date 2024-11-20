@@ -119,21 +119,13 @@
                 <button id="submit-comment" class="btn btn-primary w-100" data-video-id="">Agregar Comentario</button>
             </div>
 
-            <!-- Modal para editar comentario -->
-            <div id="editCommentModal" class="modal fade" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Editar Comentario</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <textarea id="edit-comment-input" class="form-control mb-2" placeholder="Escribe tu nuevo comentario aquí..." rows="3"></textarea>
-                            <button id="save-edit-comment" class="btn btn-success w-100">Guardar Cambios</button>
-                        </div>
-                    </div>
+            <!-- Edit Comment Modal -->
+            <div id="editCommentModal" class="modal">
+                <div class="modal-content">
+                    <span id="close-modal" class="close">&times;</span>
+                    <h3>Editar Comentario</h3>
+                    <textarea id="edit-comment-input" rows="3"></textarea>
+                    <button id="save-edit-comment" class="btn btn-primary mt-2">Guardar Cambios</button>
                 </div>
             </div>
         </div>
