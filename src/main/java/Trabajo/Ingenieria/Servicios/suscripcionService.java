@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import Trabajo.Ingenieria.DTOs.NotificacionSuscripcion;
 
 import Trabajo.Ingenieria.DTOs.NotificacionNuevoVideo;
 import Trabajo.Ingenieria.Entidades.suscripcion;
@@ -32,6 +34,9 @@ public class suscripcionService {
     @Autowired
     private videosServicio videosServicio;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
     /**
      * Agrega una nueva suscripción
      */
@@ -39,11 +44,23 @@ public class suscripcionService {
     public suscripcion addSuscripcion(suscripcion nuevaSuscripcion, Long canalId) {
         videos video = videosServicio.findById(canalId);
         if (video != null) {
-        nuevaSuscripcion.setCanalUsuario(video.getUsuario()); // Enlazar al dueño del canal
+            nuevaSuscripcion.setCanalUsuario(video.getUsuario()); // Enlazar al dueño del canal
         }
-     return suscripcionRepo.save(nuevaSuscripcion);
+    
+        suscripcion suscripcionGuardada = suscripcionRepo.save(nuevaSuscripcion);
+    
+        // Agregar lógica de notificación
+        if (nuevaSuscripcion.getUsuario().getEmail() != null) {
+            NotificacionSuscripcion notificacion = new NotificacionSuscripcion(
+                    canalId,
+                    nuevaSuscripcion.getUsuario().getEmail()
+            );
+            rabbitTemplate.convertAndSend("notificacionesExchange", "suscripcion.cola", notificacion);
+        }
+    
+        return suscripcionGuardada;
     }
-
+    
 
     /**
      * Elimina una suscripción dado el username del suscriptor y el ID del canal
@@ -63,6 +80,7 @@ public class suscripcionService {
             suscripcionRepo.delete(suscripcionOpt.get());
             return true;
         }
+
         return false;
     }
 
@@ -104,16 +122,16 @@ public class suscripcionService {
     public void enviarNotificacionesNuevoVideo(NotificacionNuevoVideo notificacion) {
         // Lógica para enviar notificaciones a los suscriptores
         List<String> correosSuscriptores = suscripcionRepo.findByVideoIdVideo(notificacion.getIdCanal())
-            .stream()
-            .map(suscripcion -> suscripcion.getUsuario().getEmail())
-            .collect(Collectors.toList());
-    
+                .stream()
+                .map(suscripcion -> suscripcion.getUsuario().getEmail())
+                .collect(Collectors.toList());
+
         for (String email : correosSuscriptores) {
             SimpleMailMessage mensaje = new SimpleMailMessage();
             mensaje.setTo(email);
             mensaje.setSubject("Nuevo Video: " + notificacion.getTituloVideo());
             mensaje.setText("Se ha subido un nuevo video en el canal al que estás suscrito.");
-    
+
             try {
                 javaMailSender.send(mensaje);
                 System.out.println("Notificación enviada a: " + email);
@@ -121,10 +139,13 @@ public class suscripcionService {
                 System.err.println("Error al enviar la notificación a " + email + ": " + e.getMessage());
             }
         }
+
     }
+
     public Long getTotalSuscriptoresPorUsuario(Long usuarioId) {
         return suscripcionRepo.countByCanalUsuarioId(usuarioId);
     }
+
     public List<videos> getVideosByUsuario(Long usuarioId) {
         return videosServicio.findByUsuarioId(usuarioId);
     }

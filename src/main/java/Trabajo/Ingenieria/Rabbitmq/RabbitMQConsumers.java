@@ -23,7 +23,6 @@ import Trabajo.Ingenieria.Servicios.videosServicio;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.MessagingException;
 
-
 @Service
 public class RabbitMQConsumers {
 
@@ -45,25 +44,26 @@ public class RabbitMQConsumers {
         String file = (String) message.get("fileData");
         videoService.guardarVideo(videoPath, file);
     }
-    
+
     @RabbitListener(queues = "miniatura.cola")
     public void storeMiniatura(@Payload Map<String, String> message) throws IOException, InterruptedException {
         String imgPath = (String) message.get("urlminiatura");
         String file = (String) message.get("miniatura");
         videoService.guardarMiniatura(file, imgPath);
     }
-     @RabbitListener(queues = "suscripcion.cola")
+
+    @RabbitListener(queues = "suscripcion.cola")
     public void recibirSuscripcion(NotificacionSuscripcion notificacion) {
         // Lógica para enviar el correo al suscriptor
         enviarCorreo(notificacion.getEmailSuscriptor(), "Te has suscrito a un canal",
-                     "Te has suscrito al canal con ID: " + notificacion.getIdCanal());
+                "Te has suscrito al canal con ID: " + notificacion.getIdCanal());
     }
 
     @RabbitListener(queues = "nuevoVideo.cola")
     public void recibirNuevoVideo(NotificacionNuevoVideo notificacion) {
         // Lógica para enviar el correo a los suscriptores del canal
         enviarCorreo(notificacion.getEmailSuscriptores(), "Nuevo video disponible",
-                     "Se ha subido un nuevo video titulado: " + notificacion.getTituloVideo());
+                "Se ha subido un nuevo video titulado: " + notificacion.getTituloVideo());
     }
 
     private void enviarCorreo(String destinatario, String asunto, String contenido) {
@@ -74,11 +74,11 @@ public class RabbitMQConsumers {
             helper.setSubject(asunto);
             helper.setText(contenido, true);
             javaMailSender.send(message);
+            System.out.println("Correo enviado a: " + destinatario);
         } catch (MessagingException e) {
-            e.printStackTrace(); // Manejo de errores para depuración
+            System.err.println("Error al enviar correo a " + destinatario + ": " + e.getMessage());
         }
     }
-
 
     @RabbitListener(queues = "comentario.cola.add")
     public void addComentario(@Payload Map<String, String> message) {
@@ -86,7 +86,8 @@ public class RabbitMQConsumers {
         comentario.setComentario(message.get("comentario"));
 
         // Define el formato que esperas en la cadena
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // Cambia esto según tu formato
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // Cambia esto según tu
+                                                                                          // formato
         LocalDateTime fechaComentario;
 
         try {
@@ -144,5 +145,43 @@ public class RabbitMQConsumers {
         }
     }
 
+    @RabbitListener(queues = "suscripcion.cola")
+    public void recibirSuscripcion(@Payload Map<String, Object> mensaje) {
+        try {
+            System.out.println("Mensaje recibido en suscripcion.cola: " + mensaje);
+    
+            // Extraer datos del mensaje
+            String emailSuscriptor = (String) mensaje.get("emailSuscriptor");
+            Long idCanal = Long.valueOf((String) mensaje.get("idCanal"));
+    
+            // Enviar correo
+            enviarCorreo(
+                emailSuscriptor,
+                "Suscripción Exitosa",
+                "Te has suscrito al canal con ID: " + idCanal
+            );
+        } catch (Exception e) {
+            System.err.println("Error al procesar mensaje de suscripcion.cola: " + e.getMessage());
+        }
+    }
+    
+
+    @RabbitListener(queues = "nuevoVideo.cola")
+    public void recibirNuevoVideo(Map<String, Object> mensaje) {
+        try {
+            String tituloVideo = (String) mensaje.get("tituloVideo");
+            String correos = (String) mensaje.get("emailSuscriptores"); // Correos separados por comas
+            String[] emails = correos.split(",");
+
+            for (String email : emails) {
+                enviarCorreo(
+                        email,
+                        "Nuevo video disponible",
+                        "Se ha subido un nuevo video titulado: " + tituloVideo);
+            }
+        } catch (Exception e) {
+            System.err.println("Error al procesar mensaje de video.cola: " + e.getMessage());
+        }
+    }
 
 }
